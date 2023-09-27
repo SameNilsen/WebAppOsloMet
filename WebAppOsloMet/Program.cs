@@ -37,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Posts}/{id?}");
 //Change action=Index to acion=Privacy to start with another file(view). See HomeController.cs
 
 app.Run();
