@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Item>
+
+<div class="container">
+    <h1>@ViewBag.CurrentViewName</h1>
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ItemID</td>
+                <td>
+                    <a asp-controller="Item"
+                       asp-action="Details"
+                       asp-route-id="@item.ItemID">@item.Name</a>
+                </td>
+                @* Det over her er en link til detailed view av item. *@
+                <td>@item.Price.ToString("0.00 NOK")</td>
+                <td>@item.Description</td>
+                <td>
+                    <img src="@item.ImageUrl" alt="Item image" style="max-width: 80px; max-height: 80px;" />
+                </td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.ItemID">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.ItemID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <p>
+        <a class="btn btn-secondary"
+           asp-controller="Item"
+           asp-action="Create">Create new Item</a>
+    </p>
+</div>
