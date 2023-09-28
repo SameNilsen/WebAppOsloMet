@@ -11,13 +11,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
-builder.Services.AddDbContext<ItemDbContext>(options =>
+builder.Services.AddDbContext<PostDbContext>(options =>
 {
     options.UseSqlite(
-        builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
+        builder.Configuration["ConnectionStrings:PostDbContextConnection"]);
 });
 
-builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 var app = builder.Build();
 

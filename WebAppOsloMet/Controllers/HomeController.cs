@@ -10,36 +10,36 @@ namespace WebAppOsloMet.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IItemRepository _itemRepository;
+        private readonly IPostRepository _postRepository;
 
-        public HomeController(ILogger<HomeController> logger, IItemRepository itemRepository)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository)
         {
             _logger = logger;
-            _itemRepository = itemRepository;
+            _postRepository = postRepository;
         }
 
         public async Task<IActionResult> Posts()
         {
             //var items = GetItems();    //  Gamle metode (uten db)
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
-            var items = await _itemRepository.GetAll();
-            var itemListViewModel = new ItemListViewModel(items, "Table");  //  Burde endres til PostListViewModel
-            return View(itemListViewModel);
+            var posts = await _postRepository.GetAll();
+            var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
+            return View(postListViewModel);
         }
 
         public async Task<IActionResult> Grid()
         {
             //var items = GetItems();    //  Gamle metode (uten db)
-            var items = await _itemRepository.GetAll();
-            var itemListViewModel = new ItemListViewModel(items, "Grid");
-            return View(itemListViewModel);
+            var posts = await _postRepository.GetAll();
+            var postListViewModel = new PostListViewModel(posts, "Grid");
+            return View(postListViewModel);
         }
 
         public async Task<IActionResult> Details(int id)
         {
             //List<Item> items = _itemDbContext.Items.ToList();
             //var item = await _itemDbContext.Items.FirstOrDefaultAsync(i => i.ItemID == id);
-            var post = await _itemRepository.GetItemById(id);
+            var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace WebAppOsloMet.Controllers
             {
                 //_itemDbContext.Items.Add(item);
                 //await _itemDbContext.SaveChangesAsync();
-                await _itemRepository.Create(post);
+                await _postRepository.Create(post);
                 return RedirectToAction(nameof(Table));
             }
             return View(post);
@@ -70,7 +70,7 @@ namespace WebAppOsloMet.Controllers
         public async Task<IActionResult> Update(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);
-            var post = await _itemRepository.GetItemById(id);
+            var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
                 return NotFound();
@@ -79,13 +79,13 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Item post)
+        public async Task<IActionResult> Update(Post post)
         {
             if ((ModelState.IsValid))
             {
                 //_itemDbContext.Items.Update(item);
                 //await _itemDbContext.SaveChangesAsync();
-                await _itemRepository.Update(post);
+                await _postRepository.Update(post);
                 return RedirectToAction(nameof(Table));
             }
             return View(post);
@@ -95,7 +95,7 @@ namespace WebAppOsloMet.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);
-            var post = await _itemRepository.GetItemById(id);
+            var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
                 return NotFound();
@@ -113,7 +113,7 @@ namespace WebAppOsloMet.Controllers
             //}
             //_itemDbContext.Items.Remove(item);
             //await _itemDbContext.SaveChangesAsync();
-            await _itemRepository.Delete(id);
+            await _postRepository.Delete(id);
             return RedirectToAction(nameof(Table));
         }
 

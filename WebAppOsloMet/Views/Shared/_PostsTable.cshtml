@@ -1,39 +1,39 @@
-﻿@model IEnumerable<Item>
+﻿@model IEnumerable<Post>
 
 <div class="container">
     <p>
         <a class="btn btn-secondary"
-           asp-controller="Item"
+           asp-controller="Post"
            asp-action="Create">Create new Post</a>
     </p>
     <h1>@ViewBag.CurrentViewName</h1>
     <table class="table table-striped">
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
+            <th>Title</th>
+            <th>PostDate</th>
+            <th>User</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var post in Model)
         {
             <tr>
-                <td>@item.ItemID</td>
+                <td>@post.PostID</td>
                 <td>
-                    <a asp-controller="Item"
+                    <a asp-controller="Home"
                        asp-action="Details"
-                       asp-route-id="@item.ItemID">@item.Name</a>
+                       asp-route-id="@post.PostID">@post.Title</a>
                 </td>
                 @* Det over her er en link til detailed view av item. *@
-                <td>@item.Price.ToString("0.00 NOK")</td>
-                <td>@item.Description</td>
+                <td>@post.PostDate</td>
+                <td>@post.UserId</td>
                 <td>
-                    <img src="@item.ImageUrl" alt="Item image" style="max-width: 80px; max-height: 80px;" />
+                    <img src="@post.ImageUrl" alt="Post image" style="max-width: 80px; max-height: 80px;" />
                 </td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@item.ItemID">Update</a>
-                    <a asp-action="Delete" asp-route-id="@item.ItemID">Delete</a>
+                    <a asp-action="Update" asp-route-id="@post.PostID">Update</a>
+                    <a asp-action="Delete" asp-route-id="@post.PostID">Delete</a>
                 </td>
             </tr>
         }

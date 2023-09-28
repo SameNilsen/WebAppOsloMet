@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebAppOsloMet.Models;
-using Microsoft.EntityFrameworkCore;
-using WebAppOsloMet.DAL;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using WebAppOsloMet.Models;
+//using Microsoft.EntityFrameworkCore;
+//using WebAppOsloMet.DAL;
 
-namespace WebAppOsloMet.Controllers
-{
-    public class CustomerController : Controller
-    {
-        private readonly ItemDbContext _itemDbContext;
+//namespace WebAppOsloMet.Controllers
+//{
+//    public class CustomerController : Controller
+//    {
+//        private readonly ItemDbContext _itemDbContext;
 
-        public CustomerController(ItemDbContext itemDbContext)
-        {
-            _itemDbContext = itemDbContext;
-        }
+//        public CustomerController(ItemDbContext itemDbContext)
+//        {
+//            _itemDbContext = itemDbContext;
+//        }
 
-        public async Task<IActionResult> Table()
-        {
-            List<Customer> customers = await _itemDbContext.Customers.ToListAsync();
-            return View(customers);
-        }
-    }
-}
+//        public async Task<IActionResult> Table()
+//        {
+//            List<Customer> customers = await _itemDbContext.Customers.ToListAsync();
+//            return View(customers);
+//        }
+//    }
+//}
