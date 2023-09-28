@@ -19,6 +19,8 @@ builder.Services.AddDbContext<PostDbContext>(options =>
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +39,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 name: "default",
-    pattern: "{controller=Home}/{action=Posts}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 //Change action=Index to acion=Privacy to start with another file(view). See HomeController.cs
 
 app.Run();

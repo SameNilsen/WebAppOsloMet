@@ -30,7 +30,6 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")

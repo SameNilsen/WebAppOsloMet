@@ -21,8 +21,8 @@
             <tr>
                 <td>@post.PostID</td>
                 <td>
-                    <a asp-controller="Home"
-                       asp-action="Details"
+                    <a asp-controller="Post"
+                       asp-action="DetailedPost"
                        asp-route-id="@post.PostID">@post.Title</a>
                 </td>
                 @* Det over her er en link til detailed view av item. *@

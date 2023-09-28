@@ -10,7 +10,7 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20230928095258_InitDb")]
+    [Migration("20230928140941_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -33,7 +33,6 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")

@@ -1,0 +1,29 @@
+﻿@model Post
+
+<h2>Create new Post</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Title"></label><span class="text-danger">*</span>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Text"></label><span class="text-danger">*</span>
+        <input asp-for="Text" class="form-control" />
+        <span asp-validation-for="Text" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserId"></label><span class="text-danger">*</span>
+        <input asp-for="UserId" class="form-control" />
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Posts" class="btn btn-secondary">Back to the table view</a>
+</form>
+

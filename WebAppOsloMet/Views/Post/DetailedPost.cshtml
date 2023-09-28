@@ -1,0 +1,17 @@
+﻿@model PostDetailsViewModel
+
+<h3 class="my-5">
+    @Model.Post.Title
+</h3>
+
+<div class="row gx-5">
+    <img alt="@Model.Post.Title" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
+    <div class="col-7">
+        <h5>@Model.Post.Text</h5>
+        <h5>Posted by: @Model.User.Name</h5>
+        <h6 class="pull-right">@Model.Post.PostDate</h6>
+        <p><a href="/Post/Posts">Back to table view</a></p>
+        <p><a href="/Post/Grid">Back to grid view</a></p>
+    </div>
+</div>
+

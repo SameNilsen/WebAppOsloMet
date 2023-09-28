@@ -11,8 +11,8 @@
         public string Title { get; set; } = string.Empty;
         public string? Text { get; set; }
         public string? ImageUrl { get; set; }
-        public string PostDate { get; set; } = string.Empty;
-        public int UserId { get; set; }
+        public string? PostDate { get; set; }
+        public int UserId { get; set; } = 1;
         public virtual User User { get; set; } = default!;
 
     }
