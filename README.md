@@ -19,3 +19,15 @@ Main feeden ser nå slik ut, så det er jo fortsatt ganske likt. Postene og bruk
 
 Har forresten også styra litt rundt med klassene og filene og mappene, slik at det litt kaos nå. Målet er å få alt bort fra demoen og de filene som hørte til der, f.eks item filene som ItemRepository og ItemController osv. Men jeg har ikke fjernet dem ettersom funksjoner jeg ikke har laget/endret på enda (som order list og sånt) fortsatt er avhengige av at de er der. De filene som derimot er en del av vårt prosjekt er: HomeController.cs, PostController.cs, DBInit.cs, IPostRepository.cs, PostRepository.cs, IUserRepository.cs, UserRepository.cs, alt i Migrations mappa, Post.cs, User.cs, PostDetailsViewModel.cs, PostListViewModel.cs, alt i Views/Home mappa og alt i Views/Post mappa, _PostsTable.cshtml og _Layout.cshtml og noen av de felles greiene. 
 
+
+
+## Update 29.09
+La til en side for visning av Posts per User. La også til litt sånne lenker mellom sidene. Hvis man trykker seg inn på en post slik at man kommer til Detailed visning av posten, kan man se hvem som posta og så trykke på navnet for å komme til en visning av alle postene denne useren har posta.
+<img width="520" alt="image" src="https://github.com/SameNilsen/WebAppOsloMet/assets/45354242/51c03b2a-487c-41fe-a21e-6693aa9a3705">
+
+Hvis man derfra trykker på tittelen på posten kommer man til detailed visning av posten, slik som det fungerer i MainFeed
+<img width="835" alt="image" src="https://github.com/SameNilsen/WebAppOsloMet/assets/45354242/3ed81242-9d8a-4fa5-b123-e4eed02c5dd3">
+
+Hvis man trykker MyPosts i NavBaren skal man i fremtiden bli sendt til en side over egne posts, men siden vi ikke har noe innlogging eller sånt enda, kommer man bare til list of posts fra første i databasen (Nå Alice Hansen)
+
+
