@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Post>
+
+<h1>List of posts from user: @Model.ElementAtOrDefault(0).User.Name</h1>
+
+@foreach (var post in Model)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <div class="container">
+            <h5>Post @post.PostID</h5>
+            <div>
+                <table class="table table-striped" style="max-width: 1200px">
+                    <tr class="table-header">
+                        <th>Title</th>
+                        <th>PostDate</th>
+                        <th>PostId</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a asp-controller="Post"
+                               asp-action="DetailedPost"
+                               asp-route-id="@post.PostID">@post.Title</a>
+                        </td>
+                        <td>@post.PostDate</td>
+                        <td>@post.PostID</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        @* <partial name="_OrderItemTable" model="order.OrderItems" /> *@
+    </div>
+}
