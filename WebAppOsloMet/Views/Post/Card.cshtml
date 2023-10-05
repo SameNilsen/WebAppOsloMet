@@ -1,11 +1,11 @@
-﻿@model ItemListViewModel
+﻿@model PostListViewModel
 
-<h1>List of Shop Items (@ViewBag.CurrentViewName View)</h1>
+<h1>List of Posts (@ViewBag.CurrentViewName View)</h1>
 <a href="/Posts/Classic">Classic View</a>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model.Items)
+    @foreach (var post in Model.Posts)
     {
-        <partial name="_ItemCard" model="item"/>
+        <partial name="_PostsTable" model="post"/>
     }
 </div>

@@ -21,11 +21,11 @@ namespace WebAppOsloMet.DAL
                 {
                     new User
                     {
-                        Name = "alice"
+                        Name = "ChoiceCold256"
                     },
                     new User
                     {
-                        Name = "bob"
+                        Name = "RevolutionaryBit660"
                     }
                 };
                 context.AddRange(users);
@@ -38,9 +38,10 @@ namespace WebAppOsloMet.DAL
                 {
                     new Post
                     {
-                        Title = "First Post!!",
-                        Text = "Epic post about star wars",
-                        ImageUrl = "/images/pizza.jpg",
+                        Title = "LEGO® Star Wars™: The Skywalker Saga",
+                        Text = "What do you think about this game?" +
+                        "I have about 50 hours into the game now, but I would like to hear your opinions.",
+                        ImageUrl = "/images/legostarwars.jpg",
                         UserId = 1,
                         PostDate = DateTime.Today.ToString()
                     },
