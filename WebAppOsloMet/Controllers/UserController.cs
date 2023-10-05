@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAppOsloMet.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppOsloMet.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppOsloMet.Controllers
 {
@@ -16,6 +17,12 @@ namespace WebAppOsloMet.Controllers
             _postDbContext = postDbContext;
         }
 
+        public async Task<IActionResult> MyPosts(string id)
+        {
+            //       GET USER FROM IDENTITYUSER
+            //List<Post> postss = user.Posts;
+            return View("Table", Table(1));
+        }
         public async Task<IActionResult> Table(int id)
         {
             var user = await _postDbContext.Users.FindAsync(id);

@@ -23,6 +23,13 @@ namespace WebAppOsloMet.DAL
             return await _db.Users.FindAsync(id);
         }
 
+        public async Task<User?> GetUserByIdentity(string id)
+        {
+            //_db.Users.Find(x => x.IdentityUserId == id);
+            //User user = _db.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id).Result;
+            return await _db.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id);
+        }
+
         public async Task Create(User user)
         {
             _db.Users.Add(user);

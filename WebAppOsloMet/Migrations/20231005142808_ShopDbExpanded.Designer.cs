@@ -11,15 +11,15 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231005093733_InitDb")]
-    partial class InitDb
+    [Migration("20231005142808_ShopDbExpanded")]
+    partial class ShopDbExpanded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Proxies:ChangeTracking", false)
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
@@ -251,11 +251,16 @@ namespace WebAppOsloMet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Users");
                 });
@@ -320,6 +325,15 @@ namespace WebAppOsloMet.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebAppOsloMet.Models.User", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
                 });
 
             modelBuilder.Entity("WebAppOsloMet.Models.User", b =>

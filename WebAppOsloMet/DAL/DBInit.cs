@@ -19,8 +19,14 @@ namespace WebAppOsloMet.DAL
             {
                 var users = new List<User>
                 {
-                    new User { Name = "Alice Hansen"},
-                    new User { Name = "Bob Johansen"},
+                    new User
+                    {
+                        Name = "alice"
+                    },
+                    new User
+                    {
+                        Name = "bob"
+                    }
                 };
                 context.AddRange(users);
                 context.SaveChanges();

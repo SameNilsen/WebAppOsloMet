@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
@@ -13,12 +14,14 @@ namespace WebAppOsloMet.Controllers
         private readonly ILogger<PostController> _logger;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PostController(ILogger<PostController> logger, IPostRepository postRepository, IUserRepository userRepository)
+        public PostController(ILogger<PostController> logger, IPostRepository postRepository, IUserRepository userRepository, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Posts()
@@ -57,6 +60,7 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public IActionResult Create()
         {
+            //Console.WriteLine(_userManager.GetUserName(User));
             return View();
         }
 
@@ -66,12 +70,25 @@ namespace WebAppOsloMet.Controllers
         {
             try
             {
-                var user = _userRepository.GetItemById(post.UserId).Result;
+                var identityUserId = _userManager.GetUserId(User);
+                var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+                //var user = _userRepository.GetItemById(post.UserId).Result;
+
                 if (user == null)
                 {
-                    return BadRequest("User not found!");
+                    var newUser = new User
+                    {
+                        Name = _userManager.GetUserName(User),
+                        IdentityUserId = identityUserId
+                    };
+                    await _userRepository.Create(newUser);
+                    post.User = newUser;
                 }
-                post.User = user;
+                else
+                {
+                    post.User = user;
+                }
+
                 var newPost = new Post
                 {
                     Title = post.Title,
@@ -79,7 +96,7 @@ namespace WebAppOsloMet.Controllers
                     ImageUrl = post.ImageUrl,
                     PostDate = DateTime.Today.ToString(),
                     UserId = post.UserId,
-                    User = user
+                    User = post.User
                 };            
                 await _postRepository.Create(post);
                 return RedirectToAction(nameof(Posts));

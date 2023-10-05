@@ -51,19 +51,6 @@ namespace WebAppOsloMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -170,6 +157,25 @@ namespace WebAppOsloMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    IdentityUserId = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -233,6 +239,11 @@ namespace WebAppOsloMet.Migrations
                 name: "IX_Posts_UserId",
                 table: "Posts",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_IdentityUserId",
+                table: "Users",
+                column: "IdentityUserId");
         }
 
         /// <inheritdoc />
@@ -260,10 +271,10 @@ namespace WebAppOsloMet.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "AspNetUsers");
         }
     }
 }

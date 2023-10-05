@@ -1,4 +1,6 @@
-﻿namespace WebAppOsloMet.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace WebAppOsloMet.Models
 {   
     // Data model (data schema) for DB
     // Navn under må starte med uppercase.
@@ -14,6 +16,7 @@
         public string? PostDate { get; set; }
         public int UserId { get; set; } = 1;
         public virtual User User { get; set; } = default!;
+
 
     }
 }
