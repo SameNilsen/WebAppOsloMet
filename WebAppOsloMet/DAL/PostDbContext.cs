@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAppOsloMet.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebAppOsloMet.DAL
 {
-    public class PostDbContext : DbContext // Inherits DbContext
+    public class PostDbContext : IdentityDbContext // Change from DbContext to IdentityDbContext for authorize/authenticate
     {
         public PostDbContext(DbContextOptions<PostDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         public DbSet<Post> Posts { get; set; }

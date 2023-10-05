@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using WebAppOsloMet.DAL;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PostDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PostDbContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,9 +19,44 @@ builder.Services.AddDbContext<PostDbContext>(options =>
         builder.Configuration["ConnectionStrings:PostDbContextConnection"]);
 });
 
+//builder.Services.AddDefaultIdentity<IdentityUser>()
+//    .AddEntityFrameworkStores<PostDbContext>();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredUniqueChars = 6;
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<PostDbContext>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();    //  Pga IEmailSender
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".Adventure.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(1800);
+    options.Cookie.IsEssential = true;
+});
+
+
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -33,13 +70,17 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapControllerRoute(
 name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 //Change action=Index to acion=Privacy to start with another file(view). See HomeController.cs
+
+app.MapRazorPages();
 
 app.Run();

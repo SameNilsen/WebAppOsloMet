@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 using WebAppOsloMet.DAL;
@@ -53,12 +54,14 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Post post)
         {
             try
@@ -88,6 +91,7 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Update(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);
@@ -100,6 +104,7 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Update(Post post)
         {
             if ((ModelState.IsValid))
@@ -113,6 +118,7 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);
@@ -125,6 +131,7 @@ namespace WebAppOsloMet.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);

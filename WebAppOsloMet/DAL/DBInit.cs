@@ -12,7 +12,7 @@ namespace WebAppOsloMet.DAL
             //ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
             PostDbContext context = serviceScope.ServiceProvider.GetRequiredService<PostDbContext>();
 
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             if (!context.Users.Any())
