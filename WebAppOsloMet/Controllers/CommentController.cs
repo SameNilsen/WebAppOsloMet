@@ -38,6 +38,8 @@ namespace WebAppOsloMet.Controllers
         public async Task<IActionResult> Create(Comment comment)
         {
             Console.WriteLine(comment.CommentText);
+            Console.WriteLine(comment.PostID);
+
             try
             {
                 //var identityUserId = _userManager.GetUserId(User);

@@ -11,8 +11,8 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231006085328_InitDb")]
-    partial class InitDb
+    [Migration("20231006122026_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,7 +241,7 @@ namespace WebAppOsloMet.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("WebAppOsloMet.Models.Post", b =>
@@ -290,7 +290,7 @@ namespace WebAppOsloMet.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
