@@ -157,7 +157,7 @@ namespace WebAppOsloMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -167,9 +167,9 @@ namespace WebAppOsloMet.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Users_AspNetUsers_IdentityUserId",
+                        name: "FK_User_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -191,9 +191,37 @@ namespace WebAppOsloMet.Migrations
                 {
                     table.PrimaryKey("PK_Posts", x => x.PostID);
                     table.ForeignKey(
-                        name: "FK_Posts_Users_UserId",
+                        name: "FK_Posts_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    CommentID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CommentText = table.Column<string>(type: "TEXT", nullable: false),
+                    PostDate = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.CommentID);
+                    table.ForeignKey(
+                        name: "FK_Comment_Posts_PostID",
+                        column: x => x.PostID,
+                        principalTable: "Posts",
+                        principalColumn: "PostID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comment_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -236,13 +264,23 @@ namespace WebAppOsloMet.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comment_PostID",
+                table: "Comment",
+                column: "PostID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_UserId",
+                table: "Comment",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
                 table: "Posts",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_IdentityUserId",
-                table: "Users",
+                name: "IX_User_IdentityUserId",
+                table: "User",
                 column: "IdentityUserId");
         }
 
@@ -265,13 +303,16 @@ namespace WebAppOsloMet.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Comment");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

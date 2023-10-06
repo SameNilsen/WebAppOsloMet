@@ -66,6 +66,36 @@ namespace WebAppOsloMet.DAL
                 context.SaveChanges();
             }
 
+            if (!context.Comments.Any())
+            {
+                var comments = new List<Comment>
+                {
+                    new Comment
+                    {
+                        CommentText = "Eyo i thinks its legit epic foreal",
+                        UserId = 2,
+                        PostID = 1,
+                        PostDate = DateTime.Today.ToString()
+                    },
+                    new Comment
+                    {
+                        CommentText = "Me like ribs",
+                        UserId = 1,
+                        PostID = 2,
+                        PostDate = DateTime.Today.ToString()
+                    },
+                    new Comment
+                    {
+                        CommentText = "Nice cok(e)",
+                        UserId = 2,
+                        PostID = 3,
+                        PostDate = DateTime.Today.ToString()
+                    }
+                };
+                context.AddRange(comments);
+                context.SaveChanges();
+            }
+
 
             //if (!context.Orders.Any())
             //{

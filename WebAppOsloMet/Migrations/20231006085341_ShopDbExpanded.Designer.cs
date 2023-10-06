@@ -11,8 +11,8 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231005142821_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20231006085341_ShopDbExpanded")]
+    partial class ShopDbExpanded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,6 +216,34 @@ namespace WebAppOsloMet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebAppOsloMet.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PostID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CommentID");
+
+                    b.HasIndex("PostID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("WebAppOsloMet.Models.Post", b =>
                 {
                     b.Property<int>("PostID")
@@ -262,7 +290,7 @@ namespace WebAppOsloMet.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -316,6 +344,25 @@ namespace WebAppOsloMet.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebAppOsloMet.Models.Comment", b =>
+                {
+                    b.HasOne("WebAppOsloMet.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAppOsloMet.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebAppOsloMet.Models.Post", b =>
                 {
                     b.HasOne("WebAppOsloMet.Models.User", "User")
@@ -336,8 +383,15 @@ namespace WebAppOsloMet.Migrations
                     b.Navigation("IdentityUser");
                 });
 
+            modelBuilder.Entity("WebAppOsloMet.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("WebAppOsloMet.Models.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

@@ -16,5 +16,61 @@
         <p><a href="/Post/Posts">Back to classic view</a></p>
         <p><a href="/Post/Card">Back to card view</a></p>
     </div>
+    @* COMMENTS: *@
+    <div class="container">
+        @* Create new Comment: *@
+        <p>
+            <script>
+                function fun(id) {
+                    var div = document.getElementById(id);
+                    if (div.style.display == "block") {
+                        div.style.display = "none";
+                    }
+                    else {
+                        div.style.display = "block";
+                    }
+                }
+            </script>
+            <button class="btn btn-secondary"
+               onclick="fun('newComment')">Create new Comment</button>
+        </p>
+        <div id="newComment" style="display :none">
+            @using(Html.BeginForm("Create", "Comment"))
+            {
+                <input type="text" name="CommentText" />
+                <input type="text" name="PostID" value="@Model.Post.PostID" hidden/>
+                <button type="submit" class="btn btn-primary">Post comment</button>
+            }
+            @* <partial name="_newComment" model="Model.Post.Comments" /> *@
+        </div>
+        <h1>@ViewBag.CurrentViewName</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Comment</th>
+                <th>PostDate</th>
+                <th>User</th>
+                <th>Actions</th>
+            </tr>
+            @foreach (var comment in Model.Post.Comments)
+            {
+                <tr>
+                    <td>@comment.CommentID</td>
+                    <td>
+                        @comment.CommentText
+                    </td>
+                    <td>@comment.PostDate</td>
+                    <td>@comment.User.Name</td>
+                    <td>
+                        @* Dont press, not made yet *@
+                        <a asp-action="Update" asp-route-id="">Upvote</a>
+                        <a asp-action="Delete" asp-route-id="">Downvote</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+
 </div>
 

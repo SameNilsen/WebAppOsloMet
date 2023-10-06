@@ -7,6 +7,7 @@ namespace WebAppOsloMet.Models
     {
         public int UserId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public virtual List<Comment>? Comments { get; set; }
         [ForeignKey("IdentityUser")]
         public string? IdentityUserId { get; set; }
         public virtual IdentityUser? IdentityUser { get; set; }

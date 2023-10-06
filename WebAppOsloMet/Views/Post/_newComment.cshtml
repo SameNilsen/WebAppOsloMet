@@ -1,0 +1,16 @@
+﻿@model Comment
+
+
+<form asp-controller="Comment" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="CommentText"></label><span class="text-danger">*</span>
+        <input asp-for="CommentText" class="form-control" />
+        <span asp-validation-for="CommentText" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PostID"></label><span class="text-danger">*</span>
+        <input asp-for="PostID" class="form-control" value="@Model.PostID" />
+        <span asp-validation-for="PostID" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Post comment</button>
+</form>

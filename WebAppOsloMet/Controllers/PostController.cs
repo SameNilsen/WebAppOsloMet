@@ -33,11 +33,11 @@ namespace WebAppOsloMet.Controllers
             return View(postListViewModel);
         }
 
-        public async Task<IActionResult> Grid()
+        public async Task<IActionResult> Card()
         {
             //var items = GetItems();    //  Gamle metode (uten db)
             var posts = await _postRepository.GetAll();
-            var postListViewModel = new PostListViewModel(posts, "Grid");
+            var postListViewModel = new PostListViewModel(posts, "Card");
             return View(postListViewModel);
         }
 
