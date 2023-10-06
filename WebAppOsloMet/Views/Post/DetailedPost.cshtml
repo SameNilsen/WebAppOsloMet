@@ -13,8 +13,9 @@
                           asp-route-id="@Model.Post.UserId">@Model.User.Name</a>
         </h5>
         <h6 class="pull-right">@Model.Post.PostDate</h6>
-        <p><a href="/Post/Posts">Back to classic view</a></p>
-        <p><a href="/Post/Card">Back to card view</a></p>
+        <p><a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a></p>
+        <p><a class="btn btn-secondary" href="/Post/Card">Back to card view</a></p>
+        <p><a class="btn btn-secondary">Reply</a></p>
     </div>
     @* COMMENTS: *@
     <div class="container">

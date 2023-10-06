@@ -12,7 +12,7 @@ namespace WebAppOsloMet.DAL
             //ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
             PostDbContext context = serviceScope.ServiceProvider.GetRequiredService<PostDbContext>();
 
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             if (!context.Users.Any())
@@ -40,26 +40,27 @@ namespace WebAppOsloMet.DAL
                     {
                         Title = "LEGO® Star Wars™: The Skywalker Saga",
                         Text = "What do you think about this game?" +
-                        "I have about 50 hours into the game now, but I would like to hear your opinions.",
+                        " I have about 50 hours into the game now, but I would like to hear your opinions.",
                         ImageUrl = "/images/legostarwars.jpg",
                         UserId = 1,
-                        PostDate = DateTime.Today.ToString()
+                        PostDate = new DateOnly(2023,10,6).ToString()
                     },
                     new Post
                     {
-                        Title = "Second Post!!",
-                        Text = "Epic post about shit",
-                        ImageUrl = "/images/ribs.jpg",
+                        Title = "Halloween is slowly approaching!",
+                        Text = "Do you celebrate halloween? If so, how do you celebrate it?",
+                        ImageUrl = "/images/halloween.jpg",
                         UserId = 2,
-                        PostDate = DateTime.Today.ToString()
+                        PostDate = new DateOnly(2023,10,5).ToString()
                     },
                     new Post
                     {
-                        Title = "Third Post!!",
-                        Text = "Epic post about stuff",
-                        ImageUrl = "/images/coke.jpg",
+                        Title = "Why does Duolingo teach you weird stuff??",
+                        Text = "Every once in a while, it seems that Duolingo gives you these random" +
+                        " sentences.",
+                        ImageUrl = "/images/duolingo.jpg",
                         UserId = 1,
-                        PostDate = DateTime.Today.ToString()
+                        PostDate = new DateOnly(2023,10,3).ToString()
                     },
                 };
                 context.AddRange(posts);
