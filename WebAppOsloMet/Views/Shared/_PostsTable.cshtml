@@ -32,8 +32,9 @@
                     <img src="@post.ImageUrl" alt="Post image" style="max-width: 80px; max-height: 80px;" />
                 </td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@post.PostID">Update</a>
-                    <a asp-action="Delete" asp-route-id="@post.PostID">Delete</a>
+                    <a class="btn btn-secondary" asp-action="Update" asp-route-id="@post.PostID">Update</a>
+                    <a class="btn btn-secondary" asp-action="Delete" asp-route-id="@post.PostID">Delete</a>
+                    <a class="btn btn-secondary" asp-controller="Post" asp-action="DetailedPost" asp-route-id="@post.PostID">Reply</a>
                 </td>
             </tr>
         }

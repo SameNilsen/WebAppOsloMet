@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "siFtIpGMxGMbdDZiu2/WmymUwxPIwYTsJN7Jt3RBlsQ=",
+  "Hash": "pJ1zhcygKOUo8jCY8AvcVjerfEtMB0A79m0QflsRjPA=",
   "Source": "WebAppOsloMet",
   "BasePath": "_content/WebAppOsloMet",
   "Mode": "Default",
@@ -1156,6 +1156,23 @@
       "OriginalItemSpec": "wwwroot\\images\\coke.jpg"
     },
     {
+      "Identity": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\duolingo.jpg",
+      "SourceId": "WebAppOsloMet",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\",
+      "BasePath": "_content/WebAppOsloMet",
+      "RelativePath": "images/duolingo.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\duolingo.jpg"
+    },
+    {
       "Identity": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\fishandchips.jpg",
       "SourceId": "WebAppOsloMet",
       "SourceType": "Discovered",
@@ -1188,6 +1205,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\frenchfries.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\halloween.jpg",
+      "SourceId": "WebAppOsloMet",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\",
+      "BasePath": "_content/WebAppOsloMet",
+      "RelativePath": "images/halloween.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\halloween.jpg"
     },
     {
       "Identity": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\legostarwars.jpg",

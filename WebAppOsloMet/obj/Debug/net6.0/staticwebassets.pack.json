@@ -25,12 +25,20 @@
       "PackagePath": "staticwebassets\\images\\coke.jpg"
     },
     {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\duolingo.jpg",
+      "PackagePath": "staticwebassets\\images\\duolingo.jpg"
+    },
+    {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\fishandchips.jpg",
       "PackagePath": "staticwebassets\\images\\fishandchips.jpg"
     },
     {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\frenchfries.jpg",
       "PackagePath": "staticwebassets\\images\\frenchfries.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\halloween.jpg",
+      "PackagePath": "staticwebassets\\images\\halloween.jpg"
     },
     {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\legostarwars.jpg",
