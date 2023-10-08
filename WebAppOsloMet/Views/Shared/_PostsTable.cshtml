@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<Post>
 
-<div class="container">
-    <p>
+<div class="container" style="text-align:center">
+    <div>
         <a class="btn btn-secondary"
-           asp-controller="Post"
-           asp-action="Create">Create new Post</a>
-    </p>
+            asp-controller="Post"
+            asp-action="Create">Create new Post</a>
+        <a class="btn btn-secondary" href="/Post/Card">Card view</a>
+    </div>
     <h1>@ViewBag.CurrentViewName</h1>
     <table class="table table-striped">
         <tr>

@@ -1,11 +1,17 @@
 ﻿@model PostListViewModel
 
-<h1>List of Posts (@ViewBag.CurrentViewName View)</h1>
-<a href="/Posts/Classic">Classic View</a>
+<h1 style="text-align:center;">Main Feed</h1>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="container" style="text-align:center">
+    <a class="btn btn-secondary"
+        asp-controller="Post"
+        asp-action="Create">Create new Post</a>
+    <a class="btn btn-secondary" href="/Post/Posts">Classic view</a>
+</div>
+
+<div>
     @foreach (var post in Model.Posts)
     {
-        <partial name="_PostsTable" model="post"/>
+        <partial name="_PostsCard" model="post" />
     }
 </div>

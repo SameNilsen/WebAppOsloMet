@@ -13,9 +13,8 @@
                           asp-route-id="@Model.Post.UserId">@Model.User.Name</a>
         </h5>
         <h6 class="pull-right">@Model.Post.PostDate</h6>
-        <p><a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a></p>
-        <p><a class="btn btn-secondary" href="/Post/Card">Back to card view</a></p>
-        <p><a class="btn btn-secondary">Reply</a></p>
+        <a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a>
+        <a class="btn btn-secondary" href="/Post/Card">Back to card view</a>
     </div>
     @* COMMENTS: *@
     <div class="container">
@@ -66,6 +65,7 @@
                         @* Dont press, not made yet *@
                         <a asp-action="Update" asp-route-id="">Upvote</a>
                         <a asp-action="Delete" asp-route-id="">Downvote</a>
+                        <a class="btn btn-secondary">Reply</a>
                     </td>
                 </tr>
             }
