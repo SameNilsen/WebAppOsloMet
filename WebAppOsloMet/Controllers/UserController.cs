@@ -22,9 +22,10 @@ namespace WebAppOsloMet.Controllers
         {
             //       GET USER FROM IDENTITYUSER
             var user = _postDbContext.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id).Result;
-            if (user.Posts == null)
+            if (user.Posts.Count == 0)
             {
-                return BadRequest("No posts...");
+                return View("Table", new List<Post>() { new Post { User = user, UserId = -1} });
+                //return BadRequest("No posts...");
             }
             List<Post> posts = user.Posts;
             return View("Table", posts);
