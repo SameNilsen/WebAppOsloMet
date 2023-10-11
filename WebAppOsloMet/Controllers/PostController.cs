@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
@@ -15,13 +16,15 @@ namespace WebAppOsloMet.Controllers
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly PostDbContext _postDbContext;
 
-        public PostController(ILogger<PostController> logger, IPostRepository postRepository, IUserRepository userRepository, UserManager<IdentityUser> userManager)
+        public PostController(ILogger<PostController> logger, IPostRepository postRepository, IUserRepository userRepository, UserManager<IdentityUser> userManager, PostDbContext postDbContext)
         {
             _logger = logger;
             _postRepository = postRepository;
             _userRepository = userRepository;
             _userManager = userManager;
+            _postDbContext = postDbContext;
         }
 
         public async Task<IActionResult> Posts()
@@ -43,6 +46,7 @@ namespace WebAppOsloMet.Controllers
 
         public async Task<IActionResult> DetailedPost(int id)
         {
+            Console.WriteLine(id);
             //List<Item> items = _itemDbContext.Items.ToList();
             //var item = await _itemDbContext.Items.FirstOrDefaultAsync(i => i.ItemID == id);
             var post = await _postRepository.GetItemById(id);
@@ -160,6 +164,113 @@ namespace WebAppOsloMet.Controllers
             //await _itemDbContext.SaveChangesAsync();
             await _postRepository.Delete(id);
             return RedirectToAction(nameof(Table));
+        }
+
+        //public async Task<string> CheckIfVoted(Post post)
+        //{
+        //    var identityUserId = _userManager.GetUserId(User);
+        //    Console.WriteLine("usident" +  identityUserId);
+        //    var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+        //    Console.WriteLine("USER: " + user);
+        //    Console.WriteLine(" -- " + user.UserId);
+        //    Console.WriteLine("---" + post.PostID);
+        //    if (post.UserVotes != null)
+        //    {
+        //        if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post && x.Vote == vote))
+        //        {                    
+        //            return true;
+        //        }
+        //    }            
+        //    return false;
+        //}
+
+        public async Task<Upvote> GetVote(Post post)
+        {
+            var identityUserId = _userManager.GetUserId(User);
+            Console.WriteLine("usident" + identityUserId);
+            var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                var newUser = new User
+                {
+                    Name = _userManager.GetUserName(User),
+                    IdentityUserId = identityUserId
+                };
+                await _userRepository.Create(newUser);             
+            }
+            user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            Console.WriteLine("USER: " + user);
+            Console.WriteLine(" -- " + user.UserId);
+            Console.WriteLine("---" + post.PostID);
+            if (post.UserVotes != null)
+            {
+                if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
+                {
+                    return post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
+                }
+            }
+
+            var newVote = new Upvote
+            {
+                UserId = user.UserId,
+                User = user,
+                PostID = post.PostID,
+                Post = post
+            };
+            
+            return newVote;
+        }
+
+        [Authorize]
+        public async Task<IActionResult> UpVote(int id)  //  eventuelt postID
+        {
+            Console.WriteLine("UPP");
+            var post = await _postRepository.GetItemById(id);
+
+            //if (CheckIfVoted(post).Result == "downvote")
+            //{
+            //    Console.WriteLine("UPVOTE");
+            //    post.UpvoteCount++;
+            //    await _postRepository.Update(post);
+            //    //post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post
+
+            //}
+            var vote = GetVote(post).Result;
+            Console.WriteLine("CURRENT VOTE: " + vote.Vote);
+            if (vote.Vote == string.Empty || vote.Vote == "downvote")
+            {
+                Console.WriteLine("UPVOTE");
+                if (vote.Vote == "downvote"){ post.UpvoteCount = post.UpvoteCount + 2; }
+                else { post.UpvoteCount++; }
+                await _postRepository.Update(post);
+                vote.Vote = "upvote";
+                _postDbContext.Upvotes.Update(vote);
+                await _postDbContext.SaveChangesAsync();
+            }
+            
+            return RedirectToAction(nameof(Posts));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DownVote(int id)  //  eventuelt postID
+        {
+            Console.WriteLine(id);
+            Console.WriteLine("DOWNN" + id);
+            var post = await _postRepository.GetItemById(id);
+
+            var vote = GetVote(post).Result;
+            if (vote.Vote == string.Empty || vote.Vote == "upvote")
+            {
+                Console.WriteLine("DOWNVOTE");
+                if (vote.Vote == "upvote") { post.UpvoteCount = post.UpvoteCount - 2; }
+                else { post.UpvoteCount--; }
+                await _postRepository.Update(post);
+                vote.Vote = "downvote";
+                _postDbContext.Upvotes.Update(vote);
+                await _postDbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Posts));
         }
 
 

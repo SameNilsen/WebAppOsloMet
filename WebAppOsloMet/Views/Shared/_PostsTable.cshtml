@@ -1,5 +1,32 @@
 ﻿@model IEnumerable<Post>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
+    .btn-arrow-up {
+        color: black; /* White text */
+        padding: 12px 16px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Mouse pointer on hover */
+    }
+
+    .btn-arrow-down {
+        color: black; /* White text */
+        padding: 12px 16px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Mouse pointer on hover */
+    }
+        /* Red background on mouse-over */
+        .btn-arrow-up:hover {
+            color: rgb(193, 26, 26);
+        }
+
+    /* blue background on mouse-over */
+    .btn-arrow-down:hover {
+        color: rgb(20, 130, 167);
+    }
+</style>
+
 <div class="container" style="text-align:center">
     <div>
         <a class="btn btn-secondary"
@@ -16,6 +43,7 @@
             <th>User</th>
             <th>Image</th>
             <th>Actions</th>
+            <th>Votes</th>
         </tr>
         @foreach (var post in Model)
         {
@@ -33,10 +61,12 @@
                     <img src="@post.ImageUrl" alt="Post image" style="max-width: 80px; max-height: 80px;" />
                 </td>
                 <td>
-                    <a class="btn btn-secondary" asp-action="Update" asp-route-id="@post.PostID">Update</a>
-                    <a class="btn btn-secondary" asp-action="Delete" asp-route-id="@post.PostID">Delete</a>
+                    
+                    <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@post.PostID"><i class="fa fa-arrow-up"></i></a>
+                    <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@post.PostID"><i class="fa fa-arrow-down"></i></a>
                     <a class="btn btn-secondary" asp-controller="Post" asp-action="DetailedPost" asp-route-id="@post.PostID">Reply</a>
                 </td>
+                <td>@post.UpvoteCount</td>
             </tr>
         }
     </table>

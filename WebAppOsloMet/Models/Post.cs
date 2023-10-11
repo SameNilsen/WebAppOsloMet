@@ -16,6 +16,8 @@ namespace WebAppOsloMet.Models
         public int UserId { get; set; } = 1;
         public virtual User User { get; set; } = default!;
         public virtual List<Comment>? Comments { get; set; }
+        public int UpvoteCount { get; set; } = 0;
+        public virtual List<Upvote>? UserVotes { get; set; }
 
 
     }

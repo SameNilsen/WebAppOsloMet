@@ -185,7 +185,8 @@ namespace WebAppOsloMet.Migrations
                     Text = table.Column<string>(type: "TEXT", nullable: true),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     PostDate = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UpvoteCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,6 +221,33 @@ namespace WebAppOsloMet.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Upvotes",
+                columns: table => new
+                {
+                    UpvoteId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Vote = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Upvotes", x => x.UpvoteId);
+                    table.ForeignKey(
+                        name: "FK_Upvotes_Posts_PostID",
+                        column: x => x.PostID,
+                        principalTable: "Posts",
+                        principalColumn: "PostID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Upvotes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -279,6 +307,16 @@ namespace WebAppOsloMet.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Upvotes_PostID",
+                table: "Upvotes",
+                column: "PostID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Upvotes_UserId",
+                table: "Upvotes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_IdentityUserId",
                 table: "Users",
                 column: "IdentityUserId");
@@ -304,6 +342,9 @@ namespace WebAppOsloMet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Upvotes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -260,6 +260,9 @@ namespace WebAppOsloMet.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UpvoteCount")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
@@ -268,6 +271,31 @@ namespace WebAppOsloMet.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("WebAppOsloMet.Models.Upvote", b =>
+                {
+                    b.Property<int>("UpvoteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PostID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Vote")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UpvoteId");
+
+                    b.HasIndex("PostID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Upvotes");
                 });
 
             modelBuilder.Entity("WebAppOsloMet.Models.User", b =>
@@ -371,6 +399,25 @@ namespace WebAppOsloMet.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebAppOsloMet.Models.Upvote", b =>
+                {
+                    b.HasOne("WebAppOsloMet.Models.Post", "Post")
+                        .WithMany("UserVotes")
+                        .HasForeignKey("PostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAppOsloMet.Models.User", "User")
+                        .WithMany("UserVotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebAppOsloMet.Models.User", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
@@ -383,6 +430,8 @@ namespace WebAppOsloMet.Migrations
             modelBuilder.Entity("WebAppOsloMet.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("UserVotes");
                 });
 
             modelBuilder.Entity("WebAppOsloMet.Models.User", b =>
@@ -390,6 +439,8 @@ namespace WebAppOsloMet.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("UserVotes");
                 });
 #pragma warning restore 612, 618
         }

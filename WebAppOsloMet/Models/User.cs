@@ -13,6 +13,7 @@ namespace WebAppOsloMet.Models
         public virtual IdentityUser? IdentityUser { get; set; }
         // Navigation property
         public virtual List<Post>? Posts { get; set; }
+        public virtual List<Upvote>? UserVotes { get; set; }
     }
 
     //public class ApplicationUser : IdentityUser
