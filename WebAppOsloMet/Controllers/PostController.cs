@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using System.Diagnostics;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
@@ -31,7 +32,43 @@ namespace WebAppOsloMet.Controllers
         {
             //var items = GetItems();    //  Gamle metode (uten db)
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
+
             var posts = await _postRepository.GetAll();
+
+            //  <----- Everything in this block is only for colors on upvote button :(
+            //            Maybe it can be moved to PostListModel or something idunno idc...
+            var votes = new List<string>();
+            var identityUserId = _userManager.GetUserId(User);
+            var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                var newUser = new User
+                {
+                    Name = _userManager.GetUserName(User),
+                    IdentityUserId = identityUserId
+                };
+                await _userRepository.Create(newUser);
+            }
+            user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            foreach (var post in posts)
+            {
+                if (post.UserVotes != null)
+                {
+                    if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
+                    {
+                        votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
+                    }
+                    else
+                    {
+                        votes.Add("blank");
+                    }
+                }
+                else { votes.Add("error"); }
+            }
+            Console.WriteLine("VOTES: " + votes.ToArray());
+            votes.ForEach(Console.WriteLine);
+            ViewData["Votes"] = votes;
+            //  ----->
             var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
             return View(postListViewModel);
         }
@@ -247,7 +284,7 @@ namespace WebAppOsloMet.Controllers
                 _postDbContext.Upvotes.Update(vote);
                 await _postDbContext.SaveChangesAsync();
             }
-            
+            ViewBag.Vote = "Hei herfra upp";
             return RedirectToAction(nameof(Posts));
         }
 
