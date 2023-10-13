@@ -43,7 +43,8 @@ namespace WebAppOsloMet.DAL
                         " I have about 50 hours into the game now, but I would like to hear your opinions.",
                         ImageUrl = "/images/legostarwars.jpg",
                         UserId = 1,
-                        PostDate = new DateOnly(2023,10,6).ToString()
+                        PostDate = new DateOnly(2023,10,6).ToString(),
+                        SubForum = "Gaming"
                     },
                     new Post
                     {
@@ -51,7 +52,8 @@ namespace WebAppOsloMet.DAL
                         Text = "Do you celebrate halloween? If so, how do you celebrate it?",
                         ImageUrl = "/images/halloween.jpg",
                         UserId = 2,
-                        PostDate = new DateOnly(2023,10,5).ToString()
+                        PostDate = new DateOnly(2023,10,5).ToString(),
+                        SubForum = "General"
                     },
                     new Post
                     {
@@ -60,7 +62,8 @@ namespace WebAppOsloMet.DAL
                         " sentences.",
                         ImageUrl = "/images/duolingo.jpg",
                         UserId = 1,
-                        PostDate = new DateOnly(2023,10,3).ToString()
+                        PostDate = new DateOnly(2023,10,3).ToString(),
+                        SubForum = "Politics"
                     },
                 };
                 context.AddRange(posts);

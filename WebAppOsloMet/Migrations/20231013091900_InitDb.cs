@@ -186,7 +186,8 @@ namespace WebAppOsloMet.Migrations
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     PostDate = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UpvoteCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpvoteCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    SubForum = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

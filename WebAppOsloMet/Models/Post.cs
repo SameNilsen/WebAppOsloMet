@@ -18,6 +18,7 @@ namespace WebAppOsloMet.Models
         public virtual List<Comment>? Comments { get; set; }
         public int UpvoteCount { get; set; } = 0;
         public virtual List<Upvote>? UserVotes { get; set; }
+        public string SubForum { get; set; } = string.Empty;
 
 
     }

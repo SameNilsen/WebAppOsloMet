@@ -1,0 +1,14 @@
+﻿@model SubForumPostListViewModel
+
+<h1 style="text-align:center;">Sub Forum</h1>
+<h2 style="text-align:center;">@Model.CurrentViewName</h2>
+
+<form asp-controller="Post" asp-action="SubForumPosts">
+    <select onchange="this.form.submit()" asp-for="CurrentViewName" asp-items="Model.SubForumSelectList" class="form-control">
+        <option value="">Select a subforum...</option>
+    </select>
+</form>
+
+<partial name="_PostsTable" model="Model.Posts" />
+
+

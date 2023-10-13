@@ -11,7 +11,7 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231011101807_ShopDbExpanded")]
+    [Migration("20231013091913_ShopDbExpanded")]
     partial class ShopDbExpanded
     {
         /// <inheritdoc />
@@ -254,6 +254,10 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SubForum")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")

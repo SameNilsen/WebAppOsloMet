@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Diagnostics;
+using WebAppOsloMet.ViewModels;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
 using WebAppOsloMet.ViewModels;
@@ -37,6 +39,16 @@ namespace WebAppOsloMet.Controllers
 
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
+            //            NB: I moved it to a separate function instead.
+            
+            ViewData["Votes"] = getVoteViewData(posts).Result;
+            //  ----->
+            var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
+            return View(postListViewModel);
+        }
+
+        public async Task<List<string>> getVoteViewData(IEnumerable<Post> posts)
+        {
             var votes = new List<string>();
             var identityUserId = _userManager.GetUserId(User);
             var user = _userRepository.GetUserByIdentity(identityUserId).Result;
@@ -67,10 +79,36 @@ namespace WebAppOsloMet.Controllers
             }
             Console.WriteLine("VOTES: " + votes.ToArray());
             votes.ForEach(Console.WriteLine);
-            ViewData["Votes"] = votes;
-            //  ----->
-            var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
-            return View(postListViewModel);
+            return votes;
+        }
+
+        public async Task<IActionResult> SubForumPosts(string CurrentViewName)
+        {
+            Console.WriteLine(":::"+CurrentViewName);
+            var subForum = CurrentViewName;
+            Console.WriteLine("----:"+ CurrentViewName + ":" + subForum);
+            var posts = _postRepository.GetBySubForum(subForum);
+            ViewData["Votes"] = getVoteViewData(posts).Result;
+            var subForums = new List<string>()  //  Could(should) be stored in database instead iguess.
+            {
+                "Gaming",
+                "Sport",
+                "School",
+                "Nature",
+                "Politics",
+                "General"
+            };
+            var subForumPostListViewModel = new SubForumPostListViewModel
+            (
+                posts,
+                subForum,
+                subForums.Select(forum => new SelectListItem
+                {
+                    Value = forum.ToString(),
+                    Text = forum.ToString().ToUpper()
+                }).ToList()
+            );
+            return View(subForumPostListViewModel);
         }
 
         public async Task<IActionResult> Card()
@@ -102,7 +140,26 @@ namespace WebAppOsloMet.Controllers
         public IActionResult Create()
         {
             //Console.WriteLine(_userManager.GetUserName(User));
-            return View();
+            //  Create SubForumSelectList
+            var subForums = new List<string>()  //  Could(should) be stored in database instead iguess.
+            {
+                "Gaming",
+                "Sport",
+                "School",
+                "Nature",
+                "Politics",
+                "General"
+            };
+            var createPostViewModel = new CreatePostViewModel
+            {
+                Post = new Post(),
+                SubForumSelectList = subForums.Select(forum => new SelectListItem
+                {
+                    Value = forum.ToString(),
+                    Text = forum.ToString().ToUpper()
+                }).ToList(),
+            };
+            return View(createPostViewModel);
         }
 
         [HttpPost]
@@ -137,7 +194,8 @@ namespace WebAppOsloMet.Controllers
                     ImageUrl = post.ImageUrl,
                     PostDate = DateTime.Today.ToString(),
                     UserId = post.UserId,
-                    User = post.User
+                    User = post.User,
+                    SubForum = post.SubForum
                 };            
                 await _postRepository.Create(post);
                 return RedirectToAction(nameof(Posts));
@@ -285,7 +343,8 @@ namespace WebAppOsloMet.Controllers
                 await _postDbContext.SaveChangesAsync();
             }
             ViewBag.Vote = "Hei herfra upp";
-            return RedirectToAction(nameof(Posts));
+            return Redirect(Request.Headers["Referer"].ToString());
+            //return RedirectToAction(nameof(Posts));
         }
 
         [Authorize]
@@ -306,8 +365,8 @@ namespace WebAppOsloMet.Controllers
                 _postDbContext.Upvotes.Update(vote);
                 await _postDbContext.SaveChangesAsync();
             }
-
-            return RedirectToAction(nameof(Posts));
+            return Redirect(Request.Headers["Referer"].ToString());
+            //return RedirectToAction(nameof(Posts));
         }
 
 

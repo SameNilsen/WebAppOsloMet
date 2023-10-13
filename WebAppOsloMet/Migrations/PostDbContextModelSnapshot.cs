@@ -253,6 +253,10 @@ namespace WebAppOsloMet.Migrations
                     b.Property<string>("PostDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SubForum")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 

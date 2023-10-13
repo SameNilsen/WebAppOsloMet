@@ -29,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Posts">MainFeed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Item" asp-action="Table">SubForums</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="SubForumPosts" asp-route-CurrentViewName="Gaming">SubForums</a>
                         </li>
                         <li class="nav-item">
                             @if (SignInManager.IsSignedIn(User))

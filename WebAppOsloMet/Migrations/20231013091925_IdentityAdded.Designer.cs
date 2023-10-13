@@ -11,8 +11,8 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231011101755_InitDb")]
-    partial class InitDb
+    [Migration("20231013091925_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,6 +254,10 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SubForum")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
