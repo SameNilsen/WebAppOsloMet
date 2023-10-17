@@ -108,6 +108,8 @@ namespace WebAppOsloMet.Controllers
                     Text = forum.ToString().ToUpper()
                 }).ToList()
             );
+            ViewBag.RedirectForum = "Gaming";
+
             return View(subForumPostListViewModel);
         }
 
@@ -343,8 +345,14 @@ namespace WebAppOsloMet.Controllers
                 await _postDbContext.SaveChangesAsync();
             }
             ViewBag.Vote = "Hei herfra upp";
+
+            //  EN TEST FOR Å FIKSE REDIRECT NÅR MAN UP/DOWNVOTER FRA SUBFORUM
+            //String[] spearator = { "/" };
+            //var referer = Request.Headers["Referer"].ToString().Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            //var redirect = referer.GetValue(referer.Length - 1);
+            //return RedirectToAction(redirect.ToString(), "post", new { CurrentViewName = post.SubForum.ToString() });
+            
             return Redirect(Request.Headers["Referer"].ToString());
-            //return RedirectToAction(nameof(Posts));
         }
 
         [Authorize]
@@ -365,8 +373,12 @@ namespace WebAppOsloMet.Controllers
                 _postDbContext.Upvotes.Update(vote);
                 await _postDbContext.SaveChangesAsync();
             }
+            //String[] spearator = { "/" };
+            //var referer = Request.Headers["Referer"].ToString().Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            //var redirect = referer.GetValue(referer.Length - 1);
+            //return RedirectToAction(redirect.ToString(), "post", new { CurrentViewName = post.SubForum.ToString() });
+            
             return Redirect(Request.Headers["Referer"].ToString());
-            //return RedirectToAction(nameof(Posts));
         }
 
 

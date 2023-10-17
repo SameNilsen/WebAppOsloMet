@@ -2,9 +2,18 @@
 
 <h1 style="text-align:center;">Sub Forum</h1>
 <h2 style="text-align:center;">@Model.CurrentViewName</h2>
+<script>
+    function sub() {
+        var e = document.getElementById("formID");
+        var s = document.getElementById("selectID");
+        var value = s.value;
+        e.setAttribute("action", "/Post/SubForumPosts?CurrentViewName=" + value);
+        e.submit()
+    }
+</script>
 
-<form asp-controller="Post" asp-action="SubForumPosts">
-    <select onchange="this.form.submit()" asp-for="CurrentViewName" asp-items="Model.SubForumSelectList" class="form-control">
+<form asp-controller="Post" asp-action="SubForumPosts" id="formID">
+    <select onchange="sub()" asp-for="CurrentViewName" asp-items="Model.SubForumSelectList" class="form-control" id="selectID">
         <option value="">Select a subforum...</option>
     </select>
 </form>
