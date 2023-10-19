@@ -1,4 +1,6 @@
-﻿namespace WebAppOsloMet.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebAppOsloMet.Models
 {
     // Data model (data schema) for DB
     // Navn under må starte med uppercase.
@@ -8,6 +10,8 @@
     public class Comment
     {
         public int CommentID { get; set; }
+
+        [StringLength(200)]
         public string CommentText { get; set; } = string.Empty;
         //public string? ImageUrl { get; set; }      //  Kommentere bilder i fremtiden???
         public string? PostDate { get; set; }

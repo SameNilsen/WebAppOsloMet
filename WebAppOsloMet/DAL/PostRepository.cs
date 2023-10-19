@@ -15,7 +15,7 @@ namespace WebAppOsloMet.DAL
 
         public async Task<IEnumerable<Post>> GetAll()
         {
-            _db.Posts.Where(x => x.SubForum == "Gaming");
+            //_db.Posts.Where(x => x.SubForum == "Gaming");
             return await _db.Posts.ToListAsync();
         }
 

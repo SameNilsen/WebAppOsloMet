@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace WebAppOsloMet.Models
 {   
     // Data model (data schema) for DB
@@ -9,7 +11,13 @@ namespace WebAppOsloMet.Models
     public class Post
     {
         public int PostID { get; set; }
+
+        [RegularExpression(@"[0-9a-zA-Zæøå. \-]{2,20}", ErrorMessage = "The title must be numbers" +
+            "or letters and between 2 to 20 char")]
+        [Display(Name = "Post name")]
         public string Title { get; set; } = string.Empty;
+
+        [StringLength(200)]
         public string? Text { get; set; }
         public string? ImageUrl { get; set; }
         public string? PostDate { get; set; }

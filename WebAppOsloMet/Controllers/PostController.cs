@@ -10,6 +10,7 @@ using WebAppOsloMet.ViewModels;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
 using WebAppOsloMet.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAppOsloMet.Controllers
 {
@@ -198,9 +199,16 @@ namespace WebAppOsloMet.Controllers
                     UserId = post.UserId,
                     User = post.User,
                     SubForum = post.SubForum
-                };            
-                await _postRepository.Create(post);
-                return RedirectToAction(nameof(Posts));
+                };
+                //var newModel = new ValidationContext(newPost);
+                ModelState.Remove("post.User");
+                if (ModelState.IsValid)
+                {
+                    await _postRepository.Create(post);
+                    return RedirectToAction(nameof(Posts));
+                }
+                IActionResult view = Create();
+                return view;
             }
             catch
             {

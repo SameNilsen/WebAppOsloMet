@@ -38,6 +38,7 @@
             <button class="btn btn-secondary"
                onclick="fun('newComment')">Create new Comment</button>
         </p>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div id="newComment" style="display :none">
             @using(Html.BeginForm("Create", "Comment"))
             {
