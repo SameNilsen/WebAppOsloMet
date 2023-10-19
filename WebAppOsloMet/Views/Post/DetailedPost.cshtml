@@ -1,32 +1,82 @@
 ﻿@model PostDetailsViewModel
 
-<h3 class="my-5">
-    @Model.Post.Title
-</h3>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
+    .btn-arrow-up {
+        color: black; /* White text */
+        padding: 12px 16px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Mouse pointer on hover */
+    }
 
-<div class="row gx-5">
-    <img alt="@Model.Post.Title" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
-    <div class="col-7">
-        <h5>@Model.Post.Text</h5>
-        <h5>Posted by: <a asp-controller="User" 
-                          asp-action="Table" 
-                          asp-route-id="@Model.Post.UserId">@Model.User.Name</a>
-        </h5>
-        <h6 class="pull-right">@Model.Post.PostDate</h6>
-        <h6 class="pull-right"><a asp-controller="Post" 
-                          asp-action="SubForumPosts"
-                          asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
-        </h6>
-        @using Microsoft.AspNetCore.Identity
-        @inject SignInManager<IdentityUser> SignInManager
-        @inject UserManager<IdentityUser> UserManager
-        @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
-        {
-            <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Update</a>  
-            <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Delete</a>                        
+    .btn-arrow-down {
+        color: black; /* White text */
+        padding: 12px 16px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Mouse pointer on hover */
+    }
+    /* Red background on mouse-over */
+    .btn-arrow-up:hover {
+        color: rgb(193, 26, 26);
+    }
+
+    /* blue background on mouse-over */
+    .btn-arrow-down:hover {
+        color: rgb(20, 130, 167);
+    }
+</style>
+
+    <h3 class="my-5">
+        @Model.Post.Title
+    </h3>
+
+    <div class="row gx-5">
+        <img alt="@Model.Post.Title" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
+        <div class="col-7">
+            <h5>@Model.Post.Text</h5>
+            <h5>Posted by: <a asp-controller="User" 
+                                asp-action="Table" 
+                                asp-route-id="@Model.Post.UserId">@Model.User.Name</a>
+            </h5>
+            <h6 class="pull-right">@Model.Post.PostDate</h6>
+            <h6 class="pull-right"><a asp-controller="Post" 
+                                asp-action="SubForumPosts"
+                                asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
+            </h6>
+
+            @using Microsoft.AspNetCore.Identity 
+            @inject SignInManager<IdentityUser> SignInManager
+            @inject UserManager<IdentityUser> UserManager
+
+            @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
+            {
+                <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Update</a>  
+                <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Delete</a>                        
+            }
+            <a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a>
+            <a class="btn btn-secondary" href="/Post/Card">Back to card view</a>
+
+        @{
+            var vote = ViewData["Vote"];
         }
-        <a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a>
-        <a class="btn btn-secondary" href="/Post/Card">Back to card view</a>
+            @if (vote == "upvote")
+            {
+                <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+                <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+            }
+            else if (vote == "downvote")
+            {
+            <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+            <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+            }
+            else
+            {
+            <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+            <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+            }
+            <span>@Model.Post.UpvoteCount</span>
+        </div>
     </div>
     @* COMMENTS: *@
     <div class="container">
@@ -44,7 +94,7 @@
                 }
             </script>
             <button class="btn btn-secondary"
-               onclick="fun('newComment')">Create new Comment</button>
+                onclick="fun('newComment')">Create new Comment</button>
         </p>
         <div asp-validation-summary="All" class="text-danger"></div>
         <div id="newComment" style="display :none">
@@ -84,7 +134,3 @@
             }
         </table>
     </div>
-
-
-</div>
-

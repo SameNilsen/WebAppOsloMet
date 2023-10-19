@@ -9,7 +9,6 @@ using System.Diagnostics;
 using WebAppOsloMet.ViewModels;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
-using WebAppOsloMet.ViewModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebAppOsloMet.Controllers
@@ -41,8 +40,10 @@ namespace WebAppOsloMet.Controllers
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
             //            NB: I moved it to a separate function instead.
-            
+
             ViewData["Votes"] = getVoteViewData(posts).Result;
+            ViewData["Vote"] = getVoteViewData(posts).Result;
+
             //  ----->
             var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
             return View(postListViewModel);
@@ -83,7 +84,7 @@ namespace WebAppOsloMet.Controllers
             return votes;
         }
 
-        public async Task<IActionResult> SubForumPosts(string CurrentViewName)
+            public async Task<IActionResult> SubForumPosts(string CurrentViewName)
         {
             Console.WriteLine(":::"+CurrentViewName);
             var subForum = CurrentViewName;
