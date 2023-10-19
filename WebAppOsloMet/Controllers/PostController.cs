@@ -220,7 +220,6 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id)
         {
-            //var item = await _itemDbContext.Items.FindAsync(id);
             var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
@@ -233,12 +232,12 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public async Task<IActionResult> Update(Post post)
         {
-            if ((ModelState.IsValid))
+            Console.WriteLine(post.PostID + "-----------");
+            ModelState.Remove("User");
+            if (ModelState.IsValid)
             {
-                //_itemDbContext.Items.Update(item);
-                //await _itemDbContext.SaveChangesAsync();
                 await _postRepository.Update(post);
-                return RedirectToAction(nameof(Table));
+                return RedirectToAction(nameof(DetailedPost), new { id = post.PostID});
             }
             return View(post);
         }

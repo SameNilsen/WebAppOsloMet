@@ -17,6 +17,13 @@
                           asp-action="SubForumPosts"
                           asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
         </h6>
+        @using Microsoft.AspNetCore.Identity
+        @inject SignInManager<IdentityUser> SignInManager
+        @inject UserManager<IdentityUser> UserManager
+        @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
+        {
+            <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Update</a>            
+        }
         <a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a>
         <a class="btn btn-secondary" href="/Post/Card">Back to card view</a>
     </div>

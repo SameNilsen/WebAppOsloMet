@@ -21,7 +21,7 @@ namespace WebAppOsloMet.Models
         public string? Text { get; set; }
         public string? ImageUrl { get; set; }
         public string? PostDate { get; set; }
-        public int UserId { get; set; } = 1;
+        public int UserId { get; set; }
         public virtual User User { get; set; } = default!;
         public virtual List<Comment>? Comments { get; set; }
         public int UpvoteCount { get; set; } = 0;
