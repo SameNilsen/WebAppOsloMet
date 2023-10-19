@@ -1,0 +1,30 @@
+﻿@model Post
+
+<h2>Delete post</h2>
+
+<h3>Are you sure??!?</h3>
+<div>
+    <h4>Post</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Post Id</dt>
+        <dd class="col-sm-10">@Model.PostID</dd>
+
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10">@Model.Title</dd>
+
+        <dt class="col-sm-2">Upvotes</dt>
+        <dd class="col-sm-10">@Model.UpvoteCount</dd>
+
+        <dt class="col-sm-2">Subforum</dt>
+        <dd class="col-sm-10">@Model.SubForum</dd>
+
+        <dt class="col-sm-2">Image Url</dt>
+        <dd class="col-sm-10">@Model.ImageUrl</dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.PostID" method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="DetailedPost" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

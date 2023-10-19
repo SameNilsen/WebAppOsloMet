@@ -259,15 +259,8 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var item = await _itemDbContext.Items.FindAsync(id);
-            //if (item == null)
-            //{
-            //    return NotFound();
-            //}
-            //_itemDbContext.Items.Remove(item);
-            //await _itemDbContext.SaveChangesAsync();
             await _postRepository.Delete(id);
-            return RedirectToAction(nameof(Table));
+            return RedirectToAction(nameof(Posts));
         }
 
         //public async Task<string> CheckIfVoted(Post post)
