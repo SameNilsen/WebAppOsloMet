@@ -36,13 +36,14 @@ namespace WebAppOsloMet.Controllers
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
 
             var posts = await _postRepository.GetAll();
+            var post = await _postRepository.GetItemById(1);
 
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
             //            NB: I moved it to a separate function instead.
 
             ViewData["Votes"] = getVoteViewData(posts).Result;
-            ViewData["Vote"] = getVoteViewData(posts).Result;
+            ViewData["Vote"] = GetOneVoteViewData(post).Result;
 
             //  ----->
             var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
@@ -84,7 +85,39 @@ namespace WebAppOsloMet.Controllers
             return votes;
         }
 
-            public async Task<IActionResult> SubForumPosts(string CurrentViewName)
+        public async Task<List<string>> GetOneVoteViewData(Post post)
+        {
+            var votes = new List<string>();
+            var identityUserId = _userManager.GetUserId(User);
+            var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                var newUser = new User
+                {
+                    Name = _userManager.GetUserName(User),
+                    IdentityUserId = identityUserId
+                };
+                await _userRepository.Create(newUser);
+            }
+            user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (post.UserVotes != null)
+            {
+                if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
+                {
+                    votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
+                }
+                else
+                {
+                    votes.Add("blank");
+                }
+            }
+            else { votes.Add("error"); }
+            Console.WriteLine("VOTES: " + votes.ToArray());
+            votes.ForEach(Console.WriteLine);
+            return votes;
+        }
+
+        public async Task<IActionResult> SubForumPosts(string CurrentViewName)
         {
             Console.WriteLine(":::"+CurrentViewName);
             var subForum = CurrentViewName;
