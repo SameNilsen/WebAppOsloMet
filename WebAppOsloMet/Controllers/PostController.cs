@@ -36,14 +36,12 @@ namespace WebAppOsloMet.Controllers
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
 
             var posts = await _postRepository.GetAll();
-            var post = await _postRepository.GetItemById(1);
 
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
             //            NB: I moved it to a separate function instead.
 
             ViewData["Votes"] = getVoteViewData(posts).Result;
-            ViewData["Vote"] = GetOneVoteViewData(post).Result;
 
             //  ----->
             var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
@@ -167,6 +165,8 @@ namespace WebAppOsloMet.Controllers
                 return NotFound();
             }
             var user = await _userRepository.GetItemById(post.UserId);
+            ViewData["Vote"] = GetOneVoteViewData(post).Result;
+
             //     CREATE VIEWMODEL TO INCLUDE NAME:
             var postDetailViewModel = new PostDetailsViewModel(post, user);
             return View(postDetailViewModel);
