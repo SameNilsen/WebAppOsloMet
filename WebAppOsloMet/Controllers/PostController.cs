@@ -36,7 +36,12 @@ namespace WebAppOsloMet.Controllers
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
 
             var posts = await _postRepository.GetAll();
-            _logger.LogWarning("This is a warning messsssssssage!!!!!");
+            if (posts == null)
+            {
+                _logger.LogError("[PostController] List of posts not found while executing" +
+                    "_postRepository.GetAll()");
+                return NotFound("List of posts not found");
+            }
 
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
@@ -47,6 +52,45 @@ namespace WebAppOsloMet.Controllers
             //  ----->
             var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
             return View(postListViewModel);
+        }
+
+        public async Task<IActionResult> Card()
+        {
+            //var items = GetItems();    //  Gamle metode (uten db)
+            var posts = await _postRepository.GetAll();
+            if (posts == null)
+            {
+                _logger.LogError("[PostController] List of posts not found while executing" +
+                    "_postRepository.GetAll()");
+                return NotFound("List of posts not found");
+            }
+            
+            var postListViewModel = new PostListViewModel(posts, "Card");
+            return View(postListViewModel);
+        }
+
+        public async Task<IActionResult> DetailedPost(int id)
+        {
+            Console.WriteLine(id);
+            //List<Item> items = _itemDbContext.Items.ToList();
+            //var item = await _itemDbContext.Items.FirstOrDefaultAsync(i => i.ItemID == id);
+            var post = await _postRepository.GetItemById(id);
+            if (post == null)
+            {
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return NotFound("Post not found for this PostID");
+            }
+            var user = await _userRepository.GetItemById(post.UserId);
+            if (user == null)
+            {
+                _logger.LogError("[PostController] User not found for this PostID {PostID:0000}", id);
+                return NotFound("User not found for showing this PostID");
+            }
+            ViewData["Vote"] = GetOneVoteViewData(post).Result;
+
+            //     CREATE VIEWMODEL TO INCLUDE NAME:
+            var postDetailViewModel = new PostDetailsViewModel(post, user);
+            return View(postDetailViewModel);
         }
 
         public async Task<List<string>> getVoteViewData(IEnumerable<Post> posts)
@@ -121,7 +165,15 @@ namespace WebAppOsloMet.Controllers
             Console.WriteLine(":::"+CurrentViewName);
             var subForum = CurrentViewName;
             Console.WriteLine("----:"+ CurrentViewName + ":" + subForum);
+
             var posts = _postRepository.GetBySubForum(subForum);
+            if (posts == null)
+            {
+                _logger.LogError("[PostController] List of posts not found while executing" +
+                    " _postRepository.GetBySubForum(subForum)");
+                return NotFound("List of posts not found");
+            }
+
             ViewData["Votes"] = getVoteViewData(posts).Result;
             var subForums = new List<string>()  //  Could(should) be stored in database instead iguess.
             {
@@ -145,32 +197,6 @@ namespace WebAppOsloMet.Controllers
             ViewBag.RedirectForum = "Gaming";
 
             return View(subForumPostListViewModel);
-        }
-
-        public async Task<IActionResult> Card()
-        {
-            //var items = GetItems();    //  Gamle metode (uten db)
-            var posts = await _postRepository.GetAll();
-            var postListViewModel = new PostListViewModel(posts, "Card");
-            return View(postListViewModel);
-        }
-
-        public async Task<IActionResult> DetailedPost(int id)
-        {
-            Console.WriteLine(id);
-            //List<Item> items = _itemDbContext.Items.ToList();
-            //var item = await _itemDbContext.Items.FirstOrDefaultAsync(i => i.ItemID == id);
-            var post = await _postRepository.GetItemById(id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-            var user = await _userRepository.GetItemById(post.UserId);
-            ViewData["Vote"] = GetOneVoteViewData(post).Result;
-
-            //     CREATE VIEWMODEL TO INCLUDE NAME:
-            var postDetailViewModel = new PostDetailsViewModel(post, user);
-            return View(postDetailViewModel);
         }
 
         [HttpGet]
@@ -235,13 +261,16 @@ namespace WebAppOsloMet.Controllers
                     User = post.User,
                     SubForum = post.SubForum
                 };
+
                 //var newModel = new ValidationContext(newPost);
                 ModelState.Remove("post.User");
                 if (ModelState.IsValid)
                 {
-                    await _postRepository.Create(post);
-                    return RedirectToAction(nameof(Posts));
+                    bool returnOk = await _postRepository.Create(post);
+                    if (returnOk)
+                        return RedirectToAction(nameof(Posts));
                 }
+                _logger.LogWarning("[PostController] Post creation failed {@post}", post);
                 IActionResult view = Create();
                 return view;
             }
@@ -258,7 +287,9 @@ namespace WebAppOsloMet.Controllers
             var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
-                return NotFound();
+                _logger.LogError("[PostController] Post not found when updating the " +
+                    "PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
             }
             return View(post);
         }
@@ -269,11 +300,14 @@ namespace WebAppOsloMet.Controllers
         {
             Console.WriteLine(post.PostID + "-----------");
             ModelState.Remove("User");
+
             if (ModelState.IsValid)
             {
-                await _postRepository.Update(post);
-                return RedirectToAction(nameof(DetailedPost), new { id = post.PostID});
+                bool returnOk = await _postRepository.Update(post);
+                if (returnOk)
+                    return RedirectToAction(nameof(DetailedPost), new { id = post.PostID});
             }
+            _logger.LogWarning("[PostController] Post update failed {@post}", post);
             return View(post);
         }
 
@@ -285,7 +319,8 @@ namespace WebAppOsloMet.Controllers
             var post = await _postRepository.GetItemById(id);
             if (post == null)
             {
-                return NotFound();
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
             }
             return View(post);
         }
@@ -294,7 +329,12 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _postRepository.Delete(id);
+            bool returnOk = await _postRepository.Delete(id);
+            if (!returnOk)
+            {
+                _logger.LogError("[PostController] Post deletion failed for the PostId {PostID:0000}", id);
+                return BadRequest("Post deletion failed");
+            }
             return RedirectToAction(nameof(Posts));
         }
 

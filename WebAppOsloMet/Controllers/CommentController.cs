@@ -28,7 +28,8 @@ namespace WebAppOsloMet.Controllers
             var user = await _postDbContext.Users.FindAsync(id);
             if (user == null)
             {
-                return BadRequest("Did not find user");
+                _logger.LogError("[CommentController] Did not find user {UserID:0000}", id);
+                return NotFound("Did not find user");
             }
             List<Post> postss = user.Posts;
             List<Post> posts = await _postDbContext.Posts.ToListAsync();
@@ -80,7 +81,8 @@ namespace WebAppOsloMet.Controllers
             }
             catch
             {
-                return BadRequest("Could not create post... ");
+                _logger.LogError("[CommentController] Could not create comment for PostID {PostID:0000}", comment);
+                return BadRequest("Could not create comment... ");
             }
         }
     }

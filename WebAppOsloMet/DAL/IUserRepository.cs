@@ -8,8 +8,8 @@ namespace WebAppOsloMet.DAL
         Task<User?> GetItemById(int id);
         Task<User?> GetUserByIdentity(string id);
 
-        Task Create(User user);
-        Task Update(User user);
+        Task<bool> Create(User user);
+        Task<bool> Update(User user);
         Task<bool> Delete(int id);
     }
 }

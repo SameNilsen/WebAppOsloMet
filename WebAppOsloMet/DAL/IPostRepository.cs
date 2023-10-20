@@ -7,8 +7,8 @@ namespace WebAppOsloMet.DAL
         Task<IEnumerable<Post>> GetAll();
         IEnumerable<Post> GetBySubForum(string forum);
         Task<Post?> GetItemById(int id);
-        Task Create(Post post);
-        Task Update(Post post);
+        Task<bool> Create(Post post);
+        Task<bool> Update(Post post);
         Task<bool> Delete(int id);
     }
 }

@@ -22,13 +22,14 @@ namespace WebAppOsloMet.Controllers
 
         public async Task<IActionResult> MyPosts(string id)
         {
-            //       GET USER FROM IDENTITYUSER
+            // GET USER FROM IDENTITYUSER
             var user = _postDbContext.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id).Result;
             if (user.Posts.Count == 0)
             {
                 return View("Table", new List<Post>() { new Post { User = user, UserId = -1} });
                 //return BadRequest("No posts...");
             }
+
             List<Post> posts = user.Posts;
             _logger.LogWarning("This is a warning message!");
             return View("Table", posts);
@@ -38,7 +39,9 @@ namespace WebAppOsloMet.Controllers
             var user = await _postDbContext.Users.FindAsync(id);
             if (user == null)
             {
-                return BadRequest("Did not find user");
+                _logger.LogError("[UserController] User not found while executing" +
+                    "_postDbContext.Users.FindAsync(id)", id);
+                return NotFound("Did not find user");
             }
             List<Post> postss = user.Posts;
             List<Post> posts = await _postDbContext.Posts.ToListAsync();
