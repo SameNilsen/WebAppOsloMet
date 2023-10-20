@@ -12,10 +12,12 @@ namespace WebAppOsloMet.Controllers
     public class UserController : Controller
     {
         private readonly PostDbContext _postDbContext;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(PostDbContext postDbContext)
+        public UserController(ILogger<UserController> logger, PostDbContext postDbContext)
         {
             _postDbContext = postDbContext;
+            _logger = logger;
         }
 
         public async Task<IActionResult> MyPosts(string id)
@@ -28,6 +30,7 @@ namespace WebAppOsloMet.Controllers
                 //return BadRequest("No posts...");
             }
             List<Post> posts = user.Posts;
+            _logger.LogWarning("This is a warning message!");
             return View("Table", posts);
         }
         public async Task<IActionResult> Table(int id)

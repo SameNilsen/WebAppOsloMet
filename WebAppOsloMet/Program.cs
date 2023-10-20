@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebAppOsloMet.DAL;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PostDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PostDbContextConnection' not found.");
@@ -57,6 +59,18 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+
+// Logger
+var loggerConfiguration = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
+
+loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceContext", out var value) &&
+e.Level == LogEventLevel.Information &&
+e.MessageTemplate.Text.Contains("Executed DbCommand"));
+
+var logger = loggerConfiguration.CreateLogger();
+builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 

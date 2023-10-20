@@ -14,11 +14,13 @@ namespace WebAppOsloMet.Controllers
     {
         private readonly PostDbContext _postDbContext;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<CommentController> _logger;
 
-        public CommentController(PostDbContext postDbContext, UserManager<IdentityUser> userManager)
+        public CommentController(ILogger<CommentController> logger, PostDbContext postDbContext, UserManager<IdentityUser> userManager)
         {
             _postDbContext = postDbContext;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Table(int id)

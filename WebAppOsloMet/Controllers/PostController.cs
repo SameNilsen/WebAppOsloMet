@@ -36,6 +36,7 @@ namespace WebAppOsloMet.Controllers
             //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
 
             var posts = await _postRepository.GetAll();
+            _logger.LogWarning("This is a warning messsssssssage!!!!!");
 
             //  <----- Everything in this block is only for colors on upvote button :(
             //            Maybe it can be moved to PostListModel or something idunno idc...
