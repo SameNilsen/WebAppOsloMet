@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebAppOsloMet.Models
@@ -12,8 +13,8 @@ namespace WebAppOsloMet.Models
     {
         public int PostID { get; set; }
 
-        [RegularExpression(@"[0-9a-zA-Zæøå. \-]{2,20}", ErrorMessage = "The title must be numbers" +
-            "or letters and between 2 to 20 char")]
+        [RegularExpression(@"[0-9a-zA-Zæøå. \-]{2,20}", ErrorMessage = "The title must contain numbers " +
+            "or letters, and must be between 2 and 20 characters.")]
         [Display(Name = "Post name")]
         public string Title { get; set; } = string.Empty;
 
@@ -27,7 +28,5 @@ namespace WebAppOsloMet.Models
         public int UpvoteCount { get; set; } = 0;
         public virtual List<Upvote>? UserVotes { get; set; }
         public string SubForum { get; set; } = string.Empty;
-
-
     }
 }

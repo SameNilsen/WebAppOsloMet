@@ -32,7 +32,7 @@
     </h3>
 
     <div class="row gx-5">
-        <img alt="@Model.Post.Title" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
+        <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
         <div class="col-7">
             <h5>@Model.Post.Text</h5>
             <h5>Posted by: <a asp-controller="User" 
@@ -78,6 +78,7 @@
             <span>@Model.Post.UpvoteCount</span>
         </div>
     </div>
+    <br />
     @* COMMENTS: *@
     <div class="container">
         @* Create new Comment: *@
@@ -109,7 +110,7 @@
         <h1>@ViewBag.CurrentViewName</h1>
         <table class="table table-striped">
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Comment</th>
                 <th>PostDate</th>
                 <th>User</th>
