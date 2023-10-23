@@ -128,9 +128,9 @@ namespace WebAppOsloMet.Controllers
             return votes;
         }
 
-        public async Task<List<string>> GetOneVoteViewData(Post post)
+        public async Task<string> GetOneVoteViewData(Post post)
         {
-            var votes = new List<string>();
+            var vote = "blank";
             var identityUserId = _userManager.GetUserId(User);
             var user = _userRepository.GetUserByIdentity(identityUserId).Result;
             if (user == null)
@@ -147,17 +147,17 @@ namespace WebAppOsloMet.Controllers
             {
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                 {
-                    votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
+                    vote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote;
                 }
                 else
                 {
-                    votes.Add("blank");
+                    vote = "blank";
                 }
             }
-            else { votes.Add("error"); }
-            Console.WriteLine("VOTES: " + votes.ToArray());
-            votes.ForEach(Console.WriteLine);
-            return votes;
+            else { vote = "error"; }
+            Console.WriteLine("VOTE: " + vote);
+            //votes.ForEach(Console.WriteLine);
+            return vote;
         }
 
         public async Task<IActionResult> SubForumPosts(string CurrentViewName)

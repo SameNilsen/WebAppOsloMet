@@ -57,9 +57,9 @@
             <a class="btn btn-secondary" href="/Post/Posts">Back to classic view</a>
             <a class="btn btn-secondary" href="/Post/Card">Back to card view</a>
 
-            @{
-                var vote = ViewData["Vote"];
-            }
+        @{
+            string vote = ViewData["Vote"].ToString();
+        }
             @if (vote == "upvote")
             {
                 <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
