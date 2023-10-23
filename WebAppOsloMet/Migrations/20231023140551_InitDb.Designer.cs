@@ -11,8 +11,8 @@ using WebAppOsloMet.DAL;
 namespace WebAppOsloMet.Migrations
 {
     [DbContext(typeof(PostDbContext))]
-    [Migration("20231013091913_ShopDbExpanded")]
-    partial class ShopDbExpanded
+    [Migration("20231023140551_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,6 +224,7 @@ namespace WebAppOsloMet.Migrations
 
                     b.Property<string>("CommentText")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
@@ -261,6 +262,7 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -309,6 +311,9 @@ namespace WebAppOsloMet.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Credebility")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IdentityUserId")

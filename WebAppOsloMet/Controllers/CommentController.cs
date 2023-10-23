@@ -15,12 +15,14 @@ namespace WebAppOsloMet.Controllers
         private readonly PostDbContext _postDbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<CommentController> _logger;
+        private readonly IUserRepository _userRepository;
 
-        public CommentController(ILogger<CommentController> logger, PostDbContext postDbContext, UserManager<IdentityUser> userManager)
+        public CommentController(ILogger<CommentController> logger, PostDbContext postDbContext, UserManager<IdentityUser> userManager, IUserRepository userRepository)
         {
             _postDbContext = postDbContext;
             _userManager = userManager;
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         public async Task<IActionResult> Table(int id)
@@ -77,6 +79,13 @@ namespace WebAppOsloMet.Controllers
                 };
                 _postDbContext.Comments.Add(newComment);
                 await _postDbContext.SaveChangesAsync();
+                //  Set creds:
+                newComment.User.Credebility += 3;
+                await _userRepository.Update(newComment.User);
+                //  Get post:
+                var post = await _postDbContext.Posts.FindAsync(comment.PostID);
+                post.User.Credebility += 5;
+                await _userRepository.Update(post.User);
                 return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID});
             }
             catch

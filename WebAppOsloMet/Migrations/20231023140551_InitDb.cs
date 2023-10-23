@@ -163,7 +163,8 @@ namespace WebAppOsloMet.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "TEXT", nullable: true)
+                    IdentityUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    Credebility = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,7 +183,7 @@ namespace WebAppOsloMet.Migrations
                     PostID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: true),
+                    Text = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
                     PostDate = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -206,7 +207,7 @@ namespace WebAppOsloMet.Migrations
                 {
                     CommentID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CommentText = table.Column<string>(type: "TEXT", nullable: false),
+                    CommentText = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     PostDate = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     PostID = table.Column<int>(type: "INTEGER", nullable: false)

@@ -103,5 +103,10 @@ namespace WebAppOsloMet.DAL
                 return false;
             }
         }
+
+        //public async Task setCredibility(int i)
+        //{
+        //    _db.Users.
+        //}
     }
 }

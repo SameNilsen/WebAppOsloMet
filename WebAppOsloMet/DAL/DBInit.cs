@@ -21,11 +21,13 @@ namespace WebAppOsloMet.DAL
                 {
                     new User
                     {
-                        Name = "ChoiceCold256"
+                        Name = "ChoiceCold256",
+                        Credebility = 62
                     },
                     new User
                     {
-                        Name = "RevolutionaryBit660"
+                        Name = "RevolutionaryBit660",
+                        Credebility = 35
                     }
                 };
                 context.AddRange(users);

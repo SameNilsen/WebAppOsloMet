@@ -14,6 +14,7 @@ namespace WebAppOsloMet.Models
         // Navigation property
         public virtual List<Post>? Posts { get; set; }
         public virtual List<Upvote>? UserVotes { get; set; }
+        public int Credebility { get; set; }
     }
 
     //public class ApplicationUser : IdentityUser

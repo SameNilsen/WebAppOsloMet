@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Comment>
+
+@{
+    var user = ViewData["User"] as User;
+}
+
+<h1>Comments by @user.Name</h1>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>Id</th>
+        <th>Comment</th>
+        <th>PostDate</th>
+        <th>PostID</th>
+        <th>Post</th>
+    </tr>
+    @foreach (var comment in Model)
+    {
+        <tr>
+            <td>@comment.CommentID</td>
+            <td>@comment.CommentText</td>
+            <td>@comment.PostDate</td>
+            <td>@comment.PostID</td>
+            <td>
+                <a asp-controller="Post"
+                   asp-action="DetailedPost"
+                   asp-route-id="@comment.PostID">@comment.Post.Title</a>
+            </td>
+        </tr>
+    }
+</table>

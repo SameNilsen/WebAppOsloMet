@@ -268,7 +268,11 @@ namespace WebAppOsloMet.Controllers
                 {
                     bool returnOk = await _postRepository.Create(post);
                     if (returnOk)
+                    {
+                        user.Credebility += 7;
+                        await _userRepository.Update(user);
                         return RedirectToAction(nameof(Posts));
+                    }
                 }
                 _logger.LogWarning("[PostController] Post creation failed {@post}", post);
                 IActionResult view = Create();
@@ -418,6 +422,8 @@ namespace WebAppOsloMet.Controllers
                 vote.Vote = "upvote";
                 _postDbContext.Upvotes.Update(vote);
                 await _postDbContext.SaveChangesAsync();
+                post.User.Credebility += 9;
+                await _userRepository.Update(post.User);
             }
             ViewBag.Vote = "Hei herfra upp";
 
@@ -447,6 +453,8 @@ namespace WebAppOsloMet.Controllers
                 vote.Vote = "downvote";
                 _postDbContext.Upvotes.Update(vote);
                 await _postDbContext.SaveChangesAsync();
+                post.User.Credebility -= 4;
+                await _userRepository.Update(post.User);
             }
             //String[] spearator = { "/" };
             //var referer = Request.Headers["Referer"].ToString().Split(spearator, StringSplitOptions.RemoveEmptyEntries);

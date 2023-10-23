@@ -221,6 +221,7 @@ namespace WebAppOsloMet.Migrations
 
                     b.Property<string>("CommentText")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostDate")
@@ -258,6 +259,7 @@ namespace WebAppOsloMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -306,6 +308,9 @@ namespace WebAppOsloMet.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Credebility")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("IdentityUserId")

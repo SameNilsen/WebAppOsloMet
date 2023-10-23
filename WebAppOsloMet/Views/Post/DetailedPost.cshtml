@@ -36,8 +36,8 @@
         <div class="col-7">
             <h5>@Model.Post.Text</h5>
             <h5>Posted by: <a asp-controller="User" 
-                                asp-action="Table" 
-                                asp-route-id="@Model.Post.UserId">@Model.User.Name</a>
+                                asp-action="UserProfile"
+                          asp-route-id="@Model.Post.UserId">@Model.User.Name</a> @Model.User.Credebility creds
             </h5>
             <h6 class="pull-right">@Model.Post.PostDate</h6>
             <h6 class="pull-right"><a asp-controller="Post" 
@@ -114,6 +114,10 @@
                 <th>Comment</th>
                 <th>PostDate</th>
                 <th>User</th>
+            <th>
+                <a asp-controller="User"
+                   asp-action="CredsInfo">Creds</a>
+            </th>
                 <th>Actions</th>
             </tr>
             @foreach (var comment in Model.Post.Comments)
@@ -125,6 +129,7 @@
                     </td>
                     <td>@comment.PostDate</td>
                     <td>@comment.User.Name</td>
+                    <td>@comment.User.Credebility</td>
                     <td>
                         @* Dont press, not made yet *@
                         <a asp-action="Update" asp-route-id="">Upvote</a>
