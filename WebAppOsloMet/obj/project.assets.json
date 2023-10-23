@@ -12330,19 +12330,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Morten\\.nuget\\packages\\": {}
+    "C:\\Users\\kevin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Morten\\source\\repos\\WebAppOsloMet\\WebAppOsloMet\\WebAppOsloMet.csproj",
+      "projectUniqueName": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\WebAppOsloMet.csproj",
       "projectName": "WebAppOsloMet",
-      "projectPath": "C:\\Users\\Morten\\source\\repos\\WebAppOsloMet\\WebAppOsloMet\\WebAppOsloMet.csproj",
-      "packagesPath": "C:\\Users\\Morten\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Morten\\source\\repos\\WebAppOsloMet\\WebAppOsloMet\\obj\\",
+      "projectPath": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\WebAppOsloMet.csproj",
+      "packagesPath": "C:\\Users\\kevin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Morten\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kevin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12426,7 +12426,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

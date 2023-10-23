@@ -12,7 +12,7 @@
     }
 </script>
 
-<form asp-controller="Post" asp-action="SubForumPosts" id="formID">
+<form asp-controller="Post" asp-action="SubForumPosts" id="formID" style="margin: 10px" >
     <select onchange="sub()" asp-for="CurrentViewName" asp-items="Model.SubForumSelectList" class="form-control" id="selectID">
         <option value="">Select a subforum...</option>
     </select>

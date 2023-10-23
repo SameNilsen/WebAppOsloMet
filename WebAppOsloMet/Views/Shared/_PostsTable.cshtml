@@ -31,15 +31,15 @@
     <div>
         <a class="btn btn-secondary"
             asp-controller="Post"
-            asp-action="Create">Create new Post</a>
-        <a class="btn btn-secondary" href="/Post/Card">Card view</a>
+            asp-action="Create">Create Post</a>
+        <a class="btn btn-secondary" href="/Post/Card">Card View</a>
     </div>
     <h1>@ViewBag.CurrentViewName</h1>
     <table class="table table-striped">
         <tr>
             <th>Id</th>
             <th>Title</th>
-            <th>PostDate</th>
+            <th>Date</th>
             <th>User</th>
             <th>Image</th>
             <th>Actions</th>
@@ -53,7 +53,8 @@
                 <td>
                     <a asp-controller="Post"
                        asp-action="DetailedPost"
-                       asp-route-id="@Model.ElementAt(i).PostID">@Model.ElementAt(i).Title</a>
+                       asp-route-id="@Model.ElementAt(i).PostID"
+                       >@Model.ElementAt(i).Title</a>
                 </td>
                 @* Det over her er en link til detailed view av en post. *@
                 <td>@Model.ElementAt(i).PostDate</td>

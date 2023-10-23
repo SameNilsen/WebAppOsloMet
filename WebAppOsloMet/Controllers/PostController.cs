@@ -10,6 +10,7 @@ using WebAppOsloMet.ViewModels;
 using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
 using System.ComponentModel.DataAnnotations;
+using Humanizer;
 
 namespace WebAppOsloMet.Controllers
 {
@@ -256,7 +257,7 @@ namespace WebAppOsloMet.Controllers
                     Title = post.Title,
                     Text = post.Text,
                     ImageUrl = post.ImageUrl,
-                    PostDate = DateTime.Today.ToString(),
+                    PostDate = DateTime.Now.ToString("dd.MM.yyyy\nHH:mm:ss"),
                     UserId = post.UserId,
                     User = post.User,
                     SubForum = post.SubForum

@@ -7,6 +7,7 @@ using WebAppOsloMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using Humanizer;
 
 namespace WebAppOsloMet.Controllers
 {
@@ -71,7 +72,7 @@ namespace WebAppOsloMet.Controllers
                 var newComment = new Comment
                 {
                     CommentText = comment.CommentText,
-                    PostDate = DateTime.Today.ToString(),
+                    PostDate = DateTime.Now.ToString("dd.MM.yyyy\nHH:mm:ss"),
                     UserId = comment.User.UserId,
                     User = comment.User,
                     PostID = comment.PostID,
