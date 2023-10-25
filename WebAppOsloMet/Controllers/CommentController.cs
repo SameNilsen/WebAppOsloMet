@@ -100,5 +100,36 @@ namespace WebAppOsloMet.Controllers
                 return BadRequest("Could not create comment... ");
             }
         }
+
+        public async Task<IActionResult> Update(Comment comment)
+        {
+            ModelState.Remove("User");
+            ModelState.Remove("Post");
+
+            if (ModelState.IsValid)
+            {
+                _postDbContext.Comments.Update(comment);
+                await _postDbContext.SaveChangesAsync();
+                
+                return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID });
+            }
+            _logger.LogWarning("[CommentController] Comment update failed {@comment}", comment);
+            return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var comment = await _postDbContext.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                _logger.LogError("[CommentController] comment not found for the CommentID {CommentID:0000}", id);
+                return RedirectToAction("Posts", "Post");
+            }
+            _postDbContext.Comments.Remove(comment);
+            await _postDbContext.SaveChangesAsync();
+            return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID });
+        }
     }
 }
