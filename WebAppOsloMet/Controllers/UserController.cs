@@ -24,6 +24,7 @@ namespace WebAppOsloMet.Controllers
             _userRepository = userRepository;
         }
 
+        //  When a user clicks the posts button in the navbar, this method is used.
         public async Task<IActionResult> MyPosts(string id)
         {
             // GET USER FROM IDENTITYUSER
@@ -38,19 +39,22 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);
             }
             user = _userRepository.GetUserByIdentity(id).Result;
-            if (user.Posts.Count() == 0)
-            {
-                Console.WriteLine("Yohoo");
-                return View("Table", new List<Post>() { new Post { User = user, UserId = -1} });
-                //return BadRequest("No posts...");
+
+            if (user.Posts.Count() == 0)  //  If the user has no posts to show, a dummy post is created.
+            {                
+                return View("Table", new List<Post>() { new Post { User = user, UserId = -1} });                
             }
 
+            //  Else the viewpage of Table is returned along with the posts.
             List<Post> posts = user.Posts;
             _logger.LogWarning("This is a warning message!");
             return View("Table", posts);
         }
+
+        //  When accessing all posts from a user:
         public async Task<IActionResult> Table(int id)
         {
+            //  Finds the user:
             var user = await _postDbContext.Users.FindAsync(id);
             if (user == null)
             {
@@ -58,11 +62,13 @@ namespace WebAppOsloMet.Controllers
                     "_postDbContext.Users.FindAsync(id)", id);
                 return NotFound("Did not find user");
             }
+            //  Returns the posts:
             List<Post> postss = user.Posts;
             List<Post> posts = await _postDbContext.Posts.ToListAsync();
             return View(postss);
         }
 
+        //  This Action method is for when the user clicks into the userprofile page of a user.
         public async Task<IActionResult> UserProfile(int id)
         {
             User user;
@@ -92,6 +98,8 @@ namespace WebAppOsloMet.Controllers
                     "_postDbContext.Users.FindAsync(id)", id);
                 return NotFound("Did not find user");
             }
+
+            //  This method returns a ViewModel with all the users posts, comments and votes.
             List<Post> posts = user.Posts;
             List<Comment> comments = user.Comments;
             List<Upvote> votes = user.UserVotes;
@@ -99,6 +107,7 @@ namespace WebAppOsloMet.Controllers
             return View(userProfileViewModel);
         }
 
+        //  When accessing the page for displaying all comments:
         public async Task<IActionResult> Comments(int userID)
         {            
             var user = await _userRepository.GetItemById(userID);
@@ -109,11 +118,12 @@ namespace WebAppOsloMet.Controllers
                     "_postDbContext.Users.FindAsync(id)", userID);
                 return NotFound("Did not find user");
             }
-            ViewData["User"] = user;
+            ViewData["User"] = user;  //  Add the user as ViewData for displaying name on the page.
             var comments = user.Comments;
             return View(comments);
         }
 
+        //  When accessing the page for displaying all Votes:
         public async Task<IActionResult> Votes(int userID)
         {
             var user = await _userRepository.GetItemById(userID);
@@ -129,67 +139,10 @@ namespace WebAppOsloMet.Controllers
             return View(votes);
         }
 
+        //  Action method for displaying page of Credibility system.
         public IActionResult CredsInfo()
         {           
             return View();
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> CreateOrderItem()
-        //{
-        //    var items = await _itemDbContext.Items.ToListAsync();
-        //    var orders = await _itemDbContext.Orders.ToListAsync();
-        //    var createOrderItemViewModel = new CreateOrderItemViewModel
-        //    {
-        //        OrderItem = new OrderItem(),
-
-        //        ItemSelectList = items.Select(item => new SelectListItem
-        //        {
-        //            Value = item.ItemID.ToString(),
-        //            Text = item.ItemID.ToString() + ": " + item.Name
-        //        }).ToList(),
-
-        //        OrderSelectList = orders.Select(order => new SelectListItem
-        //        {
-        //            Value = order.OrderId.ToString(),
-        //            Text = "Order" + order.OrderId.ToString() + ", Date: " + order.OrderDate +
-        //            ", Customer: " + order.Customer.Name
-        //        }).ToList()
-        //    };
-        //    return View(createOrderItemViewModel);
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateOrderItem(OrderItem orderItem)
-        //{
-        //    try
-        //    {
-        //        var newItem = _itemDbContext.Items.Find(orderItem.ItemId);
-        //        var newOrder = _itemDbContext.Orders.Find(orderItem.OrderId);
-
-        //        if (newItem == null || newOrder == null)
-        //        {
-        //            return BadRequest("Item or Order not found!");
-        //        }
-
-        //        var newOrderItem = new OrderItem
-        //        {
-        //            ItemId = orderItem.ItemId,
-        //            Item = newItem,
-        //            Quantity = orderItem.Quantity,
-        //            OrderId = orderItem.OrderId,
-        //            Order = newOrder
-        //        };
-        //        newOrderItem.OrderItemPrice = orderItem.Quantity * newOrderItem.Item.Price;
-
-        //        _itemDbContext.OrderItems.Add(newOrderItem);
-        //        await _itemDbContext.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Table));
-        //    }
-        //    catch
-        //    {
-        //        return BadRequest("OrderItem Creation failed.");
-        //    }
-        //}
+        }        
     }
 }

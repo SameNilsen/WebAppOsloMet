@@ -22,6 +22,7 @@ namespace WebAppOsloMet.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly PostDbContext _postDbContext;
 
+        //  Constructor. Initializes for example all repositories used.
         public PostController(ILogger<PostController> logger, IPostRepository postRepository, IUserRepository userRepository, UserManager<IdentityUser> userManager, PostDbContext postDbContext)
         {
             _logger = logger;
@@ -31,30 +32,25 @@ namespace WebAppOsloMet.Controllers
             _postDbContext = postDbContext;
         }
 
+        //  Action method used for getting all the posts in the database and return a view with this.
         public async Task<IActionResult> Posts()
         {
-            //var items = GetItems();    //  Gamle metode (uten db)
-            //List<Item> items = await _itemDbContext.Items.ToListAsync();  //  Uten repo pattern
+            var posts = await _postRepository.GetAll(); //  Uses repository to get posts.
 
-            var posts = await _postRepository.GetAll();
-            if (posts == null)
+            if (posts == null)   //  Error handling.
             {
                 _logger.LogError("[PostController] List of posts not found while executing" +
                     "_postRepository.GetAll()");
                 return NotFound("List of posts not found");
-            }
+            }          
 
-            //  <----- Everything in this block is only for colors on upvote button :(
-            //            Maybe it can be moved to PostListModel or something idunno idc...
-            //            NB: I moved it to a separate function instead.
+            ViewData["Votes"] = getVoteViewData(posts).Result;  //  Gets all votes from the logged in user and puts it in a ViewData object.
 
-            ViewData["Votes"] = getVoteViewData(posts).Result;
-
-            //  ----->
-            var postListViewModel = new PostListViewModel(posts, "Table");  //  Burde endres til PostListViewModel
+            var postListViewModel = new PostListViewModel(posts, "Table");  //  Create a ViewModel with the posts and a name.
             return View(postListViewModel);
         }
 
+        //  Works much in the same way as Posts().
         public async Task<IActionResult> Card()
         {
             //var items = GetItems();    //  Gamle metode (uten db)
@@ -70,36 +66,38 @@ namespace WebAppOsloMet.Controllers
             return View(postListViewModel);
         }
 
+        //  Action method for fetching a given post from the database to be viewed in a detailed view.
         public async Task<IActionResult> DetailedPost(int id)
-        {
-            Console.WriteLine(id);
-            //List<Item> items = _itemDbContext.Items.ToList();
-            //var item = await _itemDbContext.Items.FirstOrDefaultAsync(i => i.ItemID == id);
-            var post = await _postRepository.GetItemById(id);
+        {            
+            var post = await _postRepository.GetItemById(id);  //  Gets post from database with method from repo.
             if (post == null)
             {
                 _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
                 return NotFound("Post not found for this PostID");
             }
-            var user = await _userRepository.GetItemById(post.UserId);
+            var user = await _userRepository.GetItemById(post.UserId);  //  Gets the user who posted this post.
             if (user == null)
             {
                 _logger.LogError("[PostController] User not found for this PostID {PostID:0000}", id);
                 return NotFound("User not found for showing this PostID");
             }
-            ViewData["Vote"] = GetOneVoteViewData(post).Result;
-
-            //     CREATE VIEWMODEL TO INCLUDE NAME:
-            var postDetailViewModel = new PostDetailsViewModel(post, user);
+            ViewData["Vote"] = GetOneVoteViewData(post).Result;  //  Gets the vote the logged in user voted.
+           
+            var postDetailViewModel = new PostDetailsViewModel(post, user);  //  Creates a ViewModel with the post and user as arguments.
             return View(postDetailViewModel);
         }
 
+        //  Method for fetching the votes the logged in user voted on each post provided.
         public async Task<List<string>> getVoteViewData(IEnumerable<Post> posts)
         {
-            var votes = new List<string>();
-            var identityUserId = _userManager.GetUserId(User);
-            var user = _userRepository.GetUserByIdentity(identityUserId).Result;
-            if (user == null)
+            var votes = new List<string>();  //  Prepares a list.
+
+            //  <--- This block is for getting both the User user and IdentityUser user. We need the
+            //       IdentityUser because we only want the votes given by the currently logged
+            //       logged in user. 
+            var identityUserId = _userManager.GetUserId(User);  //  Gets IdentityUser.
+            var user = _userRepository.GetUserByIdentity(identityUserId).Result;  //  Uses the IdentityUser to get User user.
+            if (user == null)  //  If a link between the IdentityUser and User has not been made yet a new User is created.
             {
                 var newUser = new User
                 {
@@ -109,14 +107,18 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);
             }
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
-            foreach (var post in posts)
+            //  --->
+
+            foreach (var post in posts)  // For loop to get the vote from each post.
             {
-                if (post.UserVotes != null)
+                if (post.UserVotes != null)  //  Check to see if there even are any votes on the post.
                 {
+                    //  If there is a vote from the logged in user on the post, add it to the list.
                     if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                     {
                         votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
                     }
+                    //  If not then the user has not voted yet.
                     else
                     {
                         votes.Add("blank");
@@ -124,11 +126,11 @@ namespace WebAppOsloMet.Controllers
                 }
                 else { votes.Add("error"); }
             }
-            Console.WriteLine("VOTES: " + votes.ToArray());
-            votes.ForEach(Console.WriteLine);
+            
             return votes;
         }
 
+        //  Much the same as getVoteViewData() above, but instead for only one post.
         public async Task<string> GetOneVoteViewData(Post post)
         {
             var vote = "blank";
@@ -156,17 +158,17 @@ namespace WebAppOsloMet.Controllers
                 }
             }
             else { vote = "error"; }
-            Console.WriteLine("VOTE: " + vote);
-            //votes.ForEach(Console.WriteLine);
+            
             return vote;
         }
 
+        //  This Action method is used for getting the posts belonging to a subforum.
         public async Task<IActionResult> SubForumPosts(string CurrentViewName)
         {
-            Console.WriteLine(":::"+CurrentViewName);
+            
             var subForum = CurrentViewName;
-            Console.WriteLine("----:"+ CurrentViewName + ":" + subForum);
-
+            
+            //  The post repository has a method for getting all posts matching a query.
             var posts = _postRepository.GetBySubForum(subForum);
             if (posts == null)
             {
@@ -175,8 +177,9 @@ namespace WebAppOsloMet.Controllers
                 return NotFound("List of posts not found");
             }
 
-            ViewData["Votes"] = getVoteViewData(posts).Result;
-            var subForums = new List<string>()  //  Could(should) be stored in database instead iguess.
+            ViewData["Votes"] = getVoteViewData(posts).Result;  //  Getting the votes for each post by the logged in user.
+
+            var subForums = new List<string>()  //  A list of the availible subforums.
             {
                 "Gaming",
                 "Sport",
@@ -185,6 +188,8 @@ namespace WebAppOsloMet.Controllers
                 "Politics",
                 "General"
             };
+            //  A ViewModel is created with the posts, the subforum name and a list of SelectListItem
+            //   to be used in a dropdownlist.
             var subForumPostListViewModel = new SubForumPostListViewModel
             (
                 posts,
@@ -195,18 +200,19 @@ namespace WebAppOsloMet.Controllers
                     Text = forum.ToString().ToUpper()
                 }).ToList()
             );
-            ViewBag.RedirectForum = "Gaming";
+            ViewBag.RedirectForum = "Gaming";  //  Tror ikke blir brukt??
 
             return View(subForumPostListViewModel);
         }
 
+
+        //  An action method for the page used when creating a new post.
         [HttpGet]
         [Authorize]
         public IActionResult Create()
         {
-            //Console.WriteLine(_userManager.GetUserName(User));
-            //  Create SubForumSelectList
-            var subForums = new List<string>()  //  Could(should) be stored in database instead iguess.
+            
+            var subForums = new List<string>()  //  A list of the availible subforums.
             {
                 "Gaming",
                 "Sport",
@@ -215,6 +221,9 @@ namespace WebAppOsloMet.Controllers
                 "Politics",
                 "General"
             };
+
+            //  A ViewModel is created with a post to be used as model for Create form,
+            //   and a list of SelectListItem to be used in a dropdownlist.
             var createPostViewModel = new CreatePostViewModel
             {
                 Post = new Post(),
@@ -227,16 +236,18 @@ namespace WebAppOsloMet.Controllers
             return View(createPostViewModel);
         }
 
+        //  The Post version of Create method, to be used when validating and saving post to database.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(Post post)
         {
             try
             {
+                //  <--- This block is for getting both the User user and IdentityUser user. We need the
+                //       IdentityUser because then we can automatically assign the user as the 
+                //        logged in user.
                 var identityUserId = _userManager.GetUserId(User);
                 var user = _userRepository.GetUserByIdentity(identityUserId).Result;
-                //var user = _userRepository.GetItemById(post.UserId).Result;
-
                 if (user == null)
                 {
                     var newUser = new User
@@ -251,8 +262,9 @@ namespace WebAppOsloMet.Controllers
                 {
                     post.User = user;
                 }
+                //  --->
 
-                var newPost = new Post
+                var newPost = new Post  //  Creates a new post based on the form data.
                 {
                     Title = post.Title,
                     Text = post.Text,
@@ -263,18 +275,19 @@ namespace WebAppOsloMet.Controllers
                     SubForum = post.SubForum
                 };
 
-                //var newModel = new ValidationContext(newPost);
-                ModelState.Remove("post.User");
-                if (ModelState.IsValid)
+                
+                ModelState.Remove("post.User");  //  This is set in this method, so we dont want to validate this part of the form data.
+                if (ModelState.IsValid)  //  Checks if the post is created correctly.
                 {
                     bool returnOk = await _postRepository.Create(post);
                     if (returnOk)
                     {
-                        user.Credebility += 7;
+                        user.Credebility += 7;  //  When creating a post the user gets added score of 7 to their "Credebility".
                         await _userRepository.Update(user);
                         return RedirectToAction(nameof(Posts));
                     }
                 }
+                //  If creation fails, a log message is generated and the page redirects back.
                 _logger.LogWarning("[PostController] Post creation failed {@post}", post);
                 IActionResult view = Create();
                 return view;
@@ -285,11 +298,12 @@ namespace WebAppOsloMet.Controllers
             }
         }
 
+        //  Action method for updating a post. This Get method returns the view for updating.
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Update(int id)
         {
-            var post = await _postRepository.GetItemById(id);
+            var post = await _postRepository.GetItemById(id);  //  Fetches the post.
             if (post == null)
             {
                 _logger.LogError("[PostController] Post not found when updating the " +
@@ -299,12 +313,13 @@ namespace WebAppOsloMet.Controllers
             return View(post);
         }
 
+        //  Post method for updating. The edited post comes as argument and its validity is checked.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Update(Post post)
         {
-            Console.WriteLine(post.PostID + "-----------");
-            ModelState.Remove("User");
+            
+            ModelState.Remove("User");  //  Again as in Create(), we dont want to check the user. This is already validated in creation, and is not able to be changed in update anyways.
 
             if (ModelState.IsValid)
             {
@@ -316,12 +331,13 @@ namespace WebAppOsloMet.Controllers
             return View(post);
         }
 
+        //  Delete method. 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             //var item = await _itemDbContext.Items.FindAsync(id);
-            var post = await _postRepository.GetItemById(id);
+            var post = await _postRepository.GetItemById(id);  //  Gets the post to be deleted.
             if (post == null)
             {
                 _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
@@ -330,6 +346,7 @@ namespace WebAppOsloMet.Controllers
             return View(post);
         }
 
+        //  The Post method where the post is deleted.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -342,29 +359,14 @@ namespace WebAppOsloMet.Controllers
             }
             return RedirectToAction(nameof(Posts));
         }
-
-        //public async Task<string> CheckIfVoted(Post post)
-        //{
-        //    var identityUserId = _userManager.GetUserId(User);
-        //    Console.WriteLine("usident" +  identityUserId);
-        //    var user = _userRepository.GetUserByIdentity(identityUserId).Result;
-        //    Console.WriteLine("USER: " + user);
-        //    Console.WriteLine(" -- " + user.UserId);
-        //    Console.WriteLine("---" + post.PostID);
-        //    if (post.UserVotes != null)
-        //    {
-        //        if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post && x.Vote == vote))
-        //        {                    
-        //            return true;
-        //        }
-        //    }            
-        //    return false;
-        //}
-
+     
+        //  A supporting method for getting the vote of a post.
         public async Task<Upvote> GetVote(Post post)
         {
-            var identityUserId = _userManager.GetUserId(User);
-            Console.WriteLine("usident" + identityUserId);
+            //  <--- This block is for getting both the User user and IdentityUser user. We need the
+            //       IdentityUser because then we can automatically assign the user as the 
+            //        logged in user.
+            var identityUserId = _userManager.GetUserId(User);            
             var user = _userRepository.GetUserByIdentity(identityUserId).Result;
             if (user == null)
             {
@@ -376,17 +378,16 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);             
             }
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
-            Console.WriteLine("USER: " + user);
-            Console.WriteLine(" -- " + user.UserId);
-            Console.WriteLine("---" + post.PostID);
-            if (post.UserVotes != null)
+            //  --->
+            if (post.UserVotes != null)  //  Check to see if there are any votes on that post.
             {
+                //  Finds and returns the vote.
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                 {
                     return post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
                 }
             }
-
+            //  If the user has not voted on this post before, a new vote element is created.
             var newVote = new Upvote
             {
                 UserId = user.UserId,
@@ -398,70 +399,72 @@ namespace WebAppOsloMet.Controllers
             return newVote;
         }
 
+        //  An action method called when a user upvotes a post.
         [Authorize]
-        public async Task<IActionResult> UpVote(int id)  //  eventuelt postID
+        public async Task<IActionResult> UpVote(int id)  
         {
-            Console.WriteLine("UPP");
-            var post = await _postRepository.GetItemById(id);
+            
+            var post = await _postRepository.GetItemById(id);  //  Finds the post in question.
+           
+            var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
 
-            //if (CheckIfVoted(post).Result == "downvote")
-            //{
-            //    Console.WriteLine("UPVOTE");
-            //    post.UpvoteCount++;
-            //    await _postRepository.Update(post);
-            //    //post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post
-
-            //}
-            var vote = GetVote(post).Result;
-            Console.WriteLine("CURRENT VOTE: " + vote.Vote);
-            if (vote.Vote == string.Empty || vote.Vote == "downvote")
+            //  If the user has upvoted the post before then nothing should happen. Else if
+            //   the user has not voted or the previous vote was a downvote:
+            if (vote.Vote == string.Empty || vote.Vote == "downvote") 
             {
-                Console.WriteLine("UPVOTE");
+                //  If the user has downvoted before and then upvotes, then the votecount
+                //   should increment by two. If this is the first vote for the user on 
+                //    this post the votecount should only be increased by one.
                 if (vote.Vote == "downvote"){ post.UpvoteCount = post.UpvoteCount + 2; }
                 else { post.UpvoteCount++; }
-                await _postRepository.Update(post);
-                vote.Vote = "upvote";
-                _postDbContext.Upvotes.Update(vote);
-                await _postDbContext.SaveChangesAsync();
-                post.User.Credebility += 9;
+
+                await _postRepository.Update(post);  //  First update the database with the new votecount.
+                
+                vote.Vote = "upvote";  //  Set the new vote to upvote.
+                _postDbContext.Upvotes.Update(vote);  // Then update the vote in the database.
+                await _postDbContext.SaveChangesAsync();  //  Save it all.
+
+                post.User.Credebility += 9;  //  When a post gets upvoted, the posts poster gets added "Credebility".
                 await _userRepository.Update(post.User);
             }
-            ViewBag.Vote = "Hei herfra upp";
-
-            //  EN TEST FOR Å FIKSE REDIRECT NÅR MAN UP/DOWNVOTER FRA SUBFORUM
-            //String[] spearator = { "/" };
-            //var referer = Request.Headers["Referer"].ToString().Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            //var redirect = referer.GetValue(referer.Length - 1);
-            //return RedirectToAction(redirect.ToString(), "post", new { CurrentViewName = post.SubForum.ToString() });
+            ViewBag.Vote = "Hei herfra upp";  //  Tror ikke er i bruk??            
             
+            //  A bug when upvoting a post from the subforum page forces us to use this method for
+            //   redirecting back to the page. Explanation in documentation.
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
+        //  An action method called when a user downvotes a post.
         [Authorize]
-        public async Task<IActionResult> DownVote(int id)  //  eventuelt postID
+        public async Task<IActionResult> DownVote(int id)
         {
-            Console.WriteLine(id);
-            Console.WriteLine("DOWNN" + id);
-            var post = await _postRepository.GetItemById(id);
+            
+            var post = await _postRepository.GetItemById(id);  //  Finds the post in question.
 
-            var vote = GetVote(post).Result;
+            var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
+
+            //  If the user has downvoted the post before then nothing should happen. Else if
+            //   the user has not voted or the previous vote was an upvote:
             if (vote.Vote == string.Empty || vote.Vote == "upvote")
             {
-                Console.WriteLine("DOWNVOTE");
+                //  If the user has upvoted before and then downvotes, then the votecount
+                //   should decreased by two. If this is the first vote for the user on 
+                //    this post the votecount should only be decreased by one.
                 if (vote.Vote == "upvote") { post.UpvoteCount = post.UpvoteCount - 2; }
                 else { post.UpvoteCount--; }
-                await _postRepository.Update(post);
-                vote.Vote = "downvote";
-                _postDbContext.Upvotes.Update(vote);
-                await _postDbContext.SaveChangesAsync();
-                post.User.Credebility -= 4;
+
+                await _postRepository.Update(post);  //  First update the database with the new votecount.
+                
+                vote.Vote = "downvote";  //  Set the new vote to downvote.
+                _postDbContext.Upvotes.Update(vote);  // Then update the vote in the database.
+                await _postDbContext.SaveChangesAsync();  //  Save it all.
+
+                post.User.Credebility -= 4;  //  When a post gets downvoted, the posts poster loses "Credebility".
                 await _userRepository.Update(post.User);
             }
-            //String[] spearator = { "/" };
-            //var referer = Request.Headers["Referer"].ToString().Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            //var redirect = referer.GetValue(referer.Length - 1);
-            //return RedirectToAction(redirect.ToString(), "post", new { CurrentViewName = post.SubForum.ToString() });
-            
+
+            //  A bug when downvoting a post from the subforum page forces us to use this method for
+            //   redirecting back to the page. Explanation in documentation.
             return Redirect(Request.Headers["Referer"].ToString());
         }
 

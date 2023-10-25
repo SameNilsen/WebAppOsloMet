@@ -39,17 +39,17 @@ namespace WebAppOsloMet.Controllers
             return View(postss);
         }
 
+        //  Action method for creating a new comment.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(Comment comment)
-        {
-            Console.WriteLine(comment.CommentText);
-            Console.WriteLine(comment.PostID);
+        {            
 
             try
             {
-                //var identityUserId = _userManager.GetUserId(User);
-                //var user = _userRepository.GetUserByIdentity(identityUserId).Result;
+                //  <--- This block is for getting both the User user and IdentityUser user. We need the
+                //       IdentityUser because then we can automatically assign the user as the 
+                //        logged in user.
                 var identityUserId = _userManager.GetUserId(User);
                 var user = _postDbContext.Users.FirstOrDefaultAsync(x => x.IdentityUserId == identityUserId).Result;
 
@@ -68,7 +68,9 @@ namespace WebAppOsloMet.Controllers
                 {
                     comment.User = user;
                 }
+                //  --->
 
+                //  Creates the new comment based on the form data.
                 var newComment = new Comment
                 {
                     CommentText = comment.CommentText,
@@ -80,13 +82,16 @@ namespace WebAppOsloMet.Controllers
                 };
                 _postDbContext.Comments.Add(newComment);
                 await _postDbContext.SaveChangesAsync();
-                //  Set creds:
+
+                //  Set credibility for the commenter:
                 newComment.User.Credebility += 3;
                 await _userRepository.Update(newComment.User);
-                //  Get post:
+                //  Set credibility for the posts poster:
                 var post = await _postDbContext.Posts.FindAsync(comment.PostID);
                 post.User.Credebility += 5;
                 await _userRepository.Update(post.User);
+                //  Redirects back to the same page, that is the DetailedPost page, using the 
+                //   action method DetailedPost() in the PostController.
                 return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID});
             }
             catch
