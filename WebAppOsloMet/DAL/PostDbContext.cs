@@ -11,12 +11,14 @@ namespace WebAppOsloMet.DAL
             //Database.EnsureCreated();
         }
 
+        //  "Users" has a waring because the name User is also (unfortunatly) used by 
+        //    the premade IdentityUser from Microsoft.AspNetCore.Identity. This is 
+        //     unfortunatly reccuring thing throughout.
         public DbSet<Post> Posts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Upvote> Upvotes { get; set; }
-        //public DbSet<Order> Orders { get; set; }
-        //public DbSet<OrderItem> OrderItems { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

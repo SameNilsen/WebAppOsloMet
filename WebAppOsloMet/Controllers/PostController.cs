@@ -116,6 +116,8 @@ namespace WebAppOsloMet.Controllers
                     //  If there is a vote from the logged in user on the post, add it to the list.
                     if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                     {
+                        //  Warning: Well, we have already checked if the vote exists, and it does
+                        //            so it will never be a null reference.
                         votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
                     }
                     //  If not then the user has not voted yet.
@@ -279,7 +281,7 @@ namespace WebAppOsloMet.Controllers
                 ModelState.Remove("post.User");  //  This is set in this method, so we dont want to validate this part of the form data.
                 if (ModelState.IsValid)  //  Checks if the post is created correctly.
                 {
-                    bool returnOk = await _postRepository.Create(post);
+                    bool returnOk = await _postRepository.Create(newPost);
                     if (returnOk)
                     {
                         user.Credebility += 7;  //  When creating a post the user gets added score of 7 to their "Credebility".

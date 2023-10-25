@@ -58,8 +58,12 @@
             }
             <a class="btn btn-secondary" href="/Post/Posts">Back</a>
 
-        @{
-            string vote = ViewData["Vote"].ToString();
+        @{  
+            //  This is a complicated way of writing:
+            //    string vote = ViewData["Vote"].ToString();
+            //   but this way gives warnings of possible null reference. Since both the ToStrin()
+            //   method and ViewData[] method gives this warning, this is implemented.
+            string vote = (ViewData["Vote"] ?? "").ToString() ?? "";
         }
             @if (vote == "upvote")
             {
