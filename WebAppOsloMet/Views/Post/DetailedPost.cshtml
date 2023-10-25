@@ -44,7 +44,9 @@
                                 asp-action="SubForumPosts"
                                 asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
             </h6>
-
+            @* These are injected because some buttons like update and delete 
+                should only by available if the post is created by the logged in user.
+            *@
             @using Microsoft.AspNetCore.Identity 
             @inject SignInManager<IdentityUser> SignInManager
             @inject UserManager<IdentityUser> UserManager
@@ -84,6 +86,7 @@
     <div class="container">
         @* Create new Comment: *@
         <p>
+            @* The javascript code is to toggle on and off the input field for creating a comment. *@
             <script>
                 function fun(id) {
                     var div = document.getElementById(id);
@@ -98,6 +101,7 @@
             <button class="btn btn-secondary"
                 onclick="fun('newComment')">Comment</button>
         </p>
+        @* This form is for sending the new comment to the controller. *@
         <div asp-validation-summary="All" class="text-danger"></div>
         <div id="newComment" style="display :none">
             @using(Html.BeginForm("Create", "Comment"))
@@ -106,8 +110,10 @@
                 <input type="text" name="PostID" value="@Model.Post.PostID" hidden/>
                 <button type="submit" class="btn btn-primary">Post</button>
             }
-            @* <partial name="_newComment" model="Model.Post.Comments" /> *@
+            
         </div>
+
+        @* Displaying all comments. *@
         <h1>@ViewBag.CurrentViewName</h1>
         <table class="table table-striped">
             <tr>

@@ -2,6 +2,10 @@
 
 <h1>UserProfile for: @Model.User.Name</h1>
 
+@* This page is for displaying the Userprofile of a user. If this page is the userprofile for 
+    the logged in user, then there is also a button redirecting to the Manage Account page 
+     provided by Microsoft.AspNetCore.Identity.
+*@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager

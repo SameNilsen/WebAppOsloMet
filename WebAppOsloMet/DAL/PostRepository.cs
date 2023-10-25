@@ -15,9 +15,9 @@ namespace WebAppOsloMet.DAL
             _logger = logger;
         }
 
+        //  Repository method for getting all posts from database.
         public async Task<IEnumerable<Post>?> GetAll()
-        {
-            //_db.Posts.Where(x => x.SubForum == "Gaming");
+        {         
             try
             {
                 return await _db.Posts.ToListAsync();
@@ -30,11 +30,13 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  Method for getting all posts belonging to a subforum.
         public IEnumerable<Post> GetBySubForum(string forum)
         {
-            return _db.Posts.Where(x => x.SubForum == forum);
+            return _db.Posts.Where(x => x.SubForum == forum);  //  A query to get all posts that has the specified forum as SubForum.
         }
 
+        //  Method for getting a single post.
         public async Task<Post?> GetItemById(int id)
         {
             try
@@ -49,6 +51,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  When creating a post, this method adds it to the database.
         public async Task<bool> Create(Post post)
         {
             try
@@ -65,6 +68,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  When updating a post, this method updates the database with the post.
         public async Task<bool> Update(Post post)
         {
             try
@@ -81,6 +85,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  When deleting a post, this method deletes it from the database.
         public async Task<bool> Delete(int id)
         {
             try

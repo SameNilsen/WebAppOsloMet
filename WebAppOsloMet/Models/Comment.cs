@@ -13,7 +13,6 @@ namespace WebAppOsloMet.Models
 
         [StringLength(200)]
         public string CommentText { get; set; } = string.Empty;
-        //public string? ImageUrl { get; set; }      //  Kommentere bilder i fremtiden???
         public string? PostDate { get; set; }
         public int UserId { get; set; } = 1;
         public virtual User User { get; set; } = default!;

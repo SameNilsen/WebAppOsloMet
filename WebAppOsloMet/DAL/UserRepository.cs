@@ -15,6 +15,7 @@ namespace WebAppOsloMet.DAL
             _logger = logger;
         }
 
+        //  Gets all users from the database.
         public async Task<IEnumerable<User>?> GetAll()
         {
             try
@@ -29,6 +30,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  Gets a user with the given userid id.
         public async Task<User?> GetItemById(int id)
         {
             try
@@ -43,13 +45,13 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  Gets the user from the database that has the IdentityUserId matching the given id.
         public async Task<User?> GetUserByIdentity(string id)
-        {
-            //_db.Users.Find(x => x.IdentityUserId == id);
-            //User user = _db.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id).Result;
+        {            
             return await _db.Users.FirstOrDefaultAsync(x => x.IdentityUserId == id);
         }
 
+        //  When creating a user, this method adds it to the database.
         public async Task<bool> Create(User user)
         {
             try
@@ -66,6 +68,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  When updating a user, this method updates the database with the edited user.
         public async Task<bool> Update(User user)
         {
             try
@@ -82,6 +85,7 @@ namespace WebAppOsloMet.DAL
             }
         }
 
+        //  When deleting a user, this method deletes it from the database.
         public async Task<bool> Delete(int id)
         {
             try
@@ -102,11 +106,6 @@ namespace WebAppOsloMet.DAL
                     "UserID {UserID:0000}, error message: {e}", id, e.Message);
                 return false;
             }
-        }
-
-        //public async Task setCredibility(int i)
-        //{
-        //    _db.Users.
-        //}
+        }      
     }
 }

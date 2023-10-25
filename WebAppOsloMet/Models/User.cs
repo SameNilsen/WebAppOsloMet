@@ -10,15 +10,10 @@ namespace WebAppOsloMet.Models
         public virtual List<Comment>? Comments { get; set; }
         [ForeignKey("IdentityUser")]
         public string? IdentityUserId { get; set; }
-        public virtual IdentityUser? IdentityUser { get; set; }
+        public virtual IdentityUser? IdentityUser { get; set; }  //  Link to the IdentityUser.
         // Navigation property
         public virtual List<Post>? Posts { get; set; }
         public virtual List<Upvote>? UserVotes { get; set; }
         public int Credebility { get; set; }
     }
-
-    //public class ApplicationUser : IdentityUser
-    //{
-    //    public virtual User User { get; set; }
-    //}
 }

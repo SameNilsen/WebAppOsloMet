@@ -64,6 +64,9 @@
                 </td>
                 <td>
                     @{
+                        //  Gets the votes from the controller in a ViewData, and formats it as 
+                        //   a list. Checks if the user has voted on the post before, and displays
+                        //    the correct arrows with correct colors.
                         var votes = ViewData["Votes"] as List<string>;
                     }
                     @if (@votes.ElementAt(i) == "upvote")
