@@ -1,5 +1,9 @@
 ﻿@model PostDetailsViewModel
 
+@{
+    ViewData["Title"] = @Model.Post.Title;
+}
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
@@ -32,18 +36,19 @@
     </h3>
 
     <div class="row gx-5">
-        <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
+        <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5"/>
         <div class="col-7">
             <h5>@Model.Post.Text</h5>
             <h5>Posted by: <a asp-controller="User" 
                                 asp-action="UserProfile"
                           asp-route-id="@Model.Post.UserId">@Model.User.Name</a> @Model.User.Credebility creds
             </h5>
-            <h6 class="pull-right">@Model.Post.PostDate</h6>
-            <h6 class="pull-right"><a asp-controller="Post" 
+            <h5 class="pull-right">@Model.Post.PostDate</h5>
+            <br />
+            <h5 class="pull-right"><a asp-controller="Post" 
                                 asp-action="SubForumPosts"
                                 asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
-            </h6>
+            </h5>
             @* These are injected because some buttons like update and delete 
                 should only by available if the post is created by the logged in user.
             *@
@@ -158,11 +163,13 @@
                                 <input type="text" name="PostDate" value="@comment.PostDate" hidden />
                                 <input type="text" name="UserId" value="@comment.UserId" hidden />
                                 <input type="text" name="PostID" value="@comment.PostID" hidden />
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Post</button>
                             }
-                            <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <span>
+                                <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </span>
                         </div>
                     <div id="editOFF @comment.CommentID" style="display :block">@comment.CommentText</div>
                     @* ---> *@
@@ -175,11 +182,11 @@
                         @if (SignInManager.IsSignedIn(User) && comment.User.IdentityUserId == UserManager.GetUserId(User))
                         {
                             <button class="btn btn-secondary"
-                                    onclick="toggleEdit(@comment.CommentID)">
-                                Edit
+                                        onclick="toggleEdit(@comment.CommentID)">
+                                    Edit
                             </button>
-                                <a class="btn btn-secondary">Reply</a>                        
                         }
+                        <a class="btn btn-secondary">Reply</a>
                     </td>
                 </tr>
             }

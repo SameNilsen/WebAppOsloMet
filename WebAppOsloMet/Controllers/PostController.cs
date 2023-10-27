@@ -61,7 +61,7 @@ namespace WebAppOsloMet.Controllers
                     "_postRepository.GetAll()");
                 return NotFound("List of posts not found");
             }
-            
+            ViewData["Votes"] = getVoteViewData(posts).Result;  //  Gets all votes from the logged in user and puts it in a ViewData object.
             var postListViewModel = new PostListViewModel(posts, "Card");
             return View(postListViewModel);
         }
