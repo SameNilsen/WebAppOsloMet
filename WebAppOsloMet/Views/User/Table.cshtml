@@ -2,11 +2,11 @@
 
 @if (Model.Count() > 0)
 {
-    <h2>List of posts from user: @Model.ElementAtOrDefault(0).User.Name</h2>
+    <h2 style="text-align: center">List of posts from user: @Model.ElementAtOrDefault(0).User.Name</h2>
 }
 else
 {
-    <h2>User has not posted anything yet</h2>
+    <h2 style="text-align: center">User has not posted anything yet</h2>
 }
 
 @foreach (var post in Model)
@@ -15,13 +15,13 @@ else
     {
         <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
             <div class="container">
-                <h5>Post @post.PostID</h5>
+                <h5>@post.Title</h5>
                 <div>
                     <table class="table table-striped" style="max-width: 1200px">
                         <tr class="table-header">
                             <th>Title</th>
-                            <th>PostDate</th>
-                            <th>PostId</th>
+                            <th>Date</th>
+                            <th>Votes</th>
                         </tr>
                         <tr>
                             <td>
@@ -30,13 +30,11 @@ else
                                    asp-route-id="@post.PostID">@post.Title</a>
                             </td>
                             <td>@post.PostDate</td>
-                            <td>@post.PostID</td>
+                            <td>@post.UpvoteCount</td>
                         </tr>
                     </table>
                 </div>
             </div>
-            @* <partial name="_OrderItemTable" model="order.OrderItems" /> *@
         </div>
-        
     }
 }

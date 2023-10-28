@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\books.jpg",
+      "PackagePath": "staticwebassets\\images\\books.jpg"
+    },
+    {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\chickenleg.jpg",
       "PackagePath": "staticwebassets\\images\\chickenleg.jpg"
     },
@@ -37,6 +41,14 @@
       "PackagePath": "staticwebassets\\images\\fishandchips.jpg"
     },
     {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\flower.jpg",
+      "PackagePath": "staticwebassets\\images\\flower.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\fnaf.jpg",
+      "PackagePath": "staticwebassets\\images\\fnaf.jpg"
+    },
+    {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\frenchfries.jpg",
       "PackagePath": "staticwebassets\\images\\frenchfries.jpg"
     },
@@ -49,16 +61,48 @@
       "PackagePath": "staticwebassets\\images\\legostarwars.jpg"
     },
     {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\math.jpg",
+      "PackagePath": "staticwebassets\\images\\math.jpg"
+    },
+    {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\pizza.jpg",
       "PackagePath": "staticwebassets\\images\\pizza.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\plane.jpg",
+      "PackagePath": "staticwebassets\\images\\plane.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\pokemon_team.png",
+      "PackagePath": "staticwebassets\\images\\pokemon_team.png"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\reddit.jpg",
+      "PackagePath": "staticwebassets\\images\\reddit.jpg"
     },
     {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\ribs.jpg",
       "PackagePath": "staticwebassets\\images\\ribs.jpg"
     },
     {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\ryokan.jpg",
+      "PackagePath": "staticwebassets\\images\\ryokan.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\soccer.jpg",
+      "PackagePath": "staticwebassets\\images\\soccer.jpg"
+    },
+    {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\tacos.jpg",
       "PackagePath": "staticwebassets\\images\\tacos.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\tree.jpg",
+      "PackagePath": "staticwebassets\\images\\tree.jpg"
+    },
+    {
+      "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\images\\witcher.png",
+      "PackagePath": "staticwebassets\\images\\witcher.png"
     },
     {
       "Id": "C:\\Users\\kevin\\Documents\\GitHub\\WebAppOsloMet\\WebAppOsloMet\\wwwroot\\js\\site.js",

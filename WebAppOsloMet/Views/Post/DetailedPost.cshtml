@@ -139,7 +139,7 @@
         <h1>@ViewBag.CurrentViewName</h1>
         <table class="table table-striped">
             <tr>
-                <th>ID</th>
+            <th style="display: none">ID</th>
                 <th>Comment</th>
                 <th>Date</th>
                 <th>User</th>
@@ -152,7 +152,7 @@
             @foreach (var comment in Model.Post.Comments)
             {
                 <tr>
-                    <td>@comment.CommentID</td>
+                <td style="display: none">@comment.CommentID</td>
                     @* <---  This block is for editing and deleting a comment. *@
                     <td>
                         <div id="editON @comment.CommentID" style="display :none">

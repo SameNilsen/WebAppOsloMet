@@ -4,27 +4,23 @@
     var user = ViewData["User"] as User;
 }
 
-<h1>Votes by @user.Name</h1>
+<h1 style="text-align:center">Votes by @user.Name</h1>
 
 
 <table class="table table-striped">
     <tr>
-        <th>Id</th>
-        <th>Vote</th>
-        <th>PostID</th>
         <th>Post</th>
+        <th>Vote</th>
     </tr>
     @foreach (var vote in Model)
     {
         <tr>
-            <td>@vote.UpvoteId</td>
-            <td>@vote.Vote</td>
-            <td>@vote.PostID</td>
             <td>
                 <a asp-controller="Post"
                    asp-action="DetailedPost"
                    asp-route-id="@vote.PostID">@vote.Post.Title</a>
             </td>
+            <td>@vote.Vote</td>
         </tr>
     }
 </table>

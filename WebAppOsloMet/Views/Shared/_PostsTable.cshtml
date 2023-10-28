@@ -37,7 +37,7 @@
     <h1>@ViewBag.CurrentViewName</h1>
     <table class="table table-striped">
         <tr>
-            <th>Id</th>
+            <th style="display: none">ID</th>
             <th>Title</th>
             <th>Date</th>
             <th>User</th>
@@ -49,7 +49,7 @@
         @* @foreach (var post in Model) *@
         {
             <tr>
-                <td>@Model.ElementAt(i).PostID</td>
+                <td style="display: none">@Model.ElementAt(i).PostID</td>
                 <td>
                     <a asp-controller="Post"
                        asp-action="DetailedPost"
