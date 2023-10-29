@@ -83,7 +83,7 @@ namespace WebAppOsloMet.DAL
                         Title = "Is this a good pokémon team?",
                         Text = "I think I have assembled a good team now, but what do you guys think?",
                         ImageUrl = "/images/pokemon_team.png",
-                        UserId = 3,
+                        UserId = 4,
                         PostDate = new DateTime(2023, 10, 6, 17, 30, 0).ToString("dd.MM.yyyy HH:mm"),
                         SubForum = "Gaming"
                     },
@@ -92,7 +92,7 @@ namespace WebAppOsloMet.DAL
                         Title = "Five Nights at Freddy's Movie",
                         Text = "What do you think about this newly released movie?",
                         ImageUrl = "/images/fnaf.jpg",
-                        UserId = 4,
+                        UserId = 3,
                         PostDate = new DateTime(2023, 10, 8, 19, 7, 0).ToString("dd.MM.yyyy HH:mm"),
                         SubForum = "General"
                     },
