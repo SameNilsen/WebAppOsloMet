@@ -271,7 +271,7 @@ namespace WebAppOsloMet.Controllers
                     Title = post.Title,
                     Text = post.Text,
                     ImageUrl = post.ImageUrl,
-                    PostDate = DateTime.Now.ToString("dd.MM.yyyy\nHH:mm:ss"),
+                    PostDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                     UserId = post.UserId,
                     User = post.User,
                     SubForum = post.SubForum

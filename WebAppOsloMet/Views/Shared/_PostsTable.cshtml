@@ -16,14 +16,24 @@
         font-size: 16px; /* Set a font size */
         cursor: pointer; /* Mouse pointer on hover */
     }
-        /* Red background on mouse-over */
-        .btn-arrow-up:hover {
-            color: rgb(193, 26, 26);
-        }
+    /* Red background on mouse-over */
+    .btn-arrow-up:hover {
+        color: rgb(193, 26, 26);
+    }
 
     /* blue background on mouse-over */
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
+    }
+
+    /* links */
+    .links {
+        text-decoration: none;
+    }
+
+    .links:hover {
+        text-decoration: underline;
+        color: lightblue;
     }
 </style>
 
@@ -51,7 +61,7 @@
             <tr>
                 <td style="display: none">@Model.ElementAt(i).PostID</td>
                 <td>
-                    <a asp-controller="Post"
+                    <a class="links" asp-controller="Post"
                        asp-action="DetailedPost"
                        asp-route-id="@Model.ElementAt(i).PostID"
                        >@Model.ElementAt(i).Title</a>
@@ -60,7 +70,7 @@
                 <td>@Model.ElementAt(i).PostDate</td>
                 <td>@Model.ElementAt(i).User.Name</td>
                 <td>
-                    <img src="@Model.ElementAt(i).ImageUrl" alt="Post image" style="max-width: 80px; max-height: 80px;" />
+                    <img src="@Model.ElementAt(i).ImageUrl" alt="Post image" style="max-width: 100px; max-height: 100px;" />
                 </td>
                 <td>
                     @{

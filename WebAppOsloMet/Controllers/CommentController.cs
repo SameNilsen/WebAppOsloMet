@@ -74,7 +74,7 @@ namespace WebAppOsloMet.Controllers
                 var newComment = new Comment
                 {
                     CommentText = comment.CommentText,
-                    PostDate = DateTime.Now.ToString("dd.MM.yyyy\nHH:mm:ss"),
+                    PostDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                     UserId = comment.User.UserId,
                     User = comment.User,
                     PostID = comment.PostID,

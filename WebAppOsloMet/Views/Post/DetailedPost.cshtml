@@ -9,15 +9,17 @@
     /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
     .btn-arrow-up {
         color: black; /* White text */
-        padding: 12px 16px; /* Some padding */
-        font-size: 16px; /* Set a font size */
+        padding: 5px 8px; /* Some padding */
+        font-size: 20px; /* Set a font size */
+        margin: 0px 0px 0px 0px; /* Some margin */
         cursor: pointer; /* Mouse pointer on hover */
     }
 
     .btn-arrow-down {
         color: black; /* White text */
-        padding: 12px 16px; /* Some padding */
-        font-size: 16px; /* Set a font size */
+        padding: 5px 8px; /* Some padding */
+        font-size: 20px; /* Set a font size */
+        margin: 0px 10px 0px 10px; /* Some margin */
         cursor: pointer; /* Mouse pointer on hover */
     }
     /* Red background on mouse-over */
@@ -29,6 +31,15 @@
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
     }
+
+    /* links */
+    .links {
+        text-decoration: none;
+    }
+    .links:hover {
+        text-decoration: underline;
+        color: cyan;
+    }
 </style>
 
     <h3 class="my-5">
@@ -36,56 +47,60 @@
     </h3>
 
     <div class="row gx-5">
-        <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5"/>
+        <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
         <div class="col-7">
             <h5>@Model.Post.Text</h5>
-            <h5>Posted by: <a asp-controller="User" 
+            <h5>Posted by: <a class="links" asp-controller="User" 
                                 asp-action="UserProfile"
-                          asp-route-id="@Model.Post.UserId">@Model.User.Name</a> @Model.User.Credebility creds
+                          asp-route-id="@Model.Post.UserId">@Model.User.Name</a> <span>@Model.User.Credebility creds</span>
             </h5>
-            <h5 class="pull-right">@Model.Post.PostDate</h5>
-            <br />
-            <h5 class="pull-right"><a asp-controller="Post" 
-                                asp-action="SubForumPosts"
-                                asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
-            </h5>
-            @* These are injected because some buttons like update and delete 
+            <hr />
+            <div style="margin-bottom:10px">
+                @* These are injected because some buttons like update and delete
                 should only by available if the post is created by the logged in user.
-            *@
-            @using Microsoft.AspNetCore.Identity 
-            @inject SignInManager<IdentityUser> SignInManager
-            @inject UserManager<IdentityUser> UserManager
+                *@
+                @using Microsoft.AspNetCore.Identity
+                @inject SignInManager<IdentityUser> SignInManager
+                @inject UserManager<IdentityUser> UserManager
 
-            @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
-            {
-                <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Edit</a>  
-                <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-danger">Delete</a>                        
-            }
-            <a class="btn btn-secondary" href="/Post/Posts">Back</a>
-
-        @{  
-            //  This is a complicated way of writing:
-            //    string vote = ViewData["Vote"].ToString();
-            //   but this way gives warnings of possible null reference. Since both the ToStrin()
-            //   method and ViewData[] method gives this warning, this is implemented.
-            string vote = (ViewData["Vote"] ?? "").ToString() ?? "";
-        }
-            @if (vote == "upvote")
-            {
-                <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
-                <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
-            }
-            else if (vote == "downvote")
-            {
-            <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
-            <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
-            }
-            else
-            {
-            <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
-            <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
-            }
-            <span>@Model.Post.UpvoteCount</span>
+                <a class="btn btn-secondary" href="/Post/Posts">Back</a>
+                @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
+                {
+                    <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Edit</a>
+                    <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-danger">Delete</a>
+                }
+                <h5 class="pull-right">@Model.Post.PostDate</h5>
+            </div>
+            <div>
+                @{
+                    //  This is a complicated way of writing:
+                    //    string vote = ViewData["Vote"].ToString();
+                    //   but this way gives warnings of possible null reference. Since both the ToStrin()
+                    //   method and ViewData[] method gives this warning, this is implemented.
+                    string vote = (ViewData["Vote"] ?? "").ToString() ?? "";
+                }
+                @if (vote == "upvote")
+                {
+                    <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+                    <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+                }
+                else if (vote == "downvote")
+                {
+                    <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+                    <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+                }
+                else
+                {
+                    <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
+                    <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
+                }
+                <span style="font-size:20px">@Model.Post.UpvoteCount</span>
+                <h5 class="pull-right">
+                    <a class="links" asp-controller="Post"
+                        asp-action="SubForumPosts"
+                        asp-route-CurrentViewName="@Model.Post.SubForum">@Model.Post.SubForum</a>
+                </h5>
+            </div>
         </div>
     </div>
 
@@ -125,26 +140,24 @@
         </p>
         @* This form is for sending the new comment to the controller. *@
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div id="newComment" style="display :none">
+        <div id="newComment" style="display:none">
             @using(Html.BeginForm("Create", "Comment"))
             {
-                <input type="text" name="CommentText" />
-                <input type="text" name="PostID" value="@Model.Post.PostID" hidden/>
-                <button type="submit" class="btn btn-primary">Post</button>
+                <input type="text" name="CommentText">
+                <!--<input type="text" name="PostID" value="@Model.Post.PostID" hidden/>-->
+                <button style="margin: 0px 0px 5px 10px"type="submit" class="btn btn-primary">Post</button>
             }
-            
         </div>
 
         @* Displaying all comments. *@
         <h1>@ViewBag.CurrentViewName</h1>
         <table class="table table-striped">
             <tr>
-            <th style="display: none">ID</th>
                 <th>Comment</th>
                 <th>Date</th>
                 <th>User</th>
             <th>
-                <a asp-controller="User"
+                <a class="links" asp-controller="User"
                    asp-action="CredsInfo">Creds</a>
             </th>
                 <th>Actions</th>
@@ -155,23 +168,21 @@
                 <td style="display: none">@comment.CommentID</td>
                     @* <---  This block is for editing and deleting a comment. *@
                     <td>
-                        <div id="editON @comment.CommentID" style="display :none">
+                        <div id="editON @comment.CommentID" style="display:none">
                             @using (Html.BeginForm("Update", "Comment"))
                             {
-                                <input type="text" name="CommentText" value="@comment.CommentText" />
+                                <input type="text" name="CommentText" value="@comment.CommentText">
                                 <input type="text" name="CommentID" value="@comment.CommentID" hidden />
                                 <input type="text" name="PostDate" value="@comment.PostDate" hidden />
                                 <input type="text" name="UserId" value="@comment.UserId" hidden />
                                 <input type="text" name="PostID" value="@comment.PostID" hidden />
-                                <button type="submit" class="btn btn-primary">Post</button>
+                                <button style="margin: 0px 0px 5px 10px" type="submit" class="btn btn-primary">Post</button>
                             }
-                            <span>
-                                <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </span>
+                            <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
-                    <div id="editOFF @comment.CommentID" style="display :block">@comment.CommentText</div>
+                    <div id="editOFF @comment.CommentID" style="display:block">@comment.CommentText</div>
                     @* ---> *@
                     </td>
                     <td>@comment.PostDate</td>
@@ -186,7 +197,6 @@
                                     Edit
                             </button>
                         }
-                        <a class="btn btn-secondary">Reply</a>
                     </td>
                 </tr>
             }

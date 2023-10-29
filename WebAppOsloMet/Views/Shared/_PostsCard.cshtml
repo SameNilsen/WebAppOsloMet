@@ -27,6 +27,16 @@
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
     }
+
+    /* links */
+    .links {
+        text-decoration: none;
+    }
+
+    .links:hover {
+        text-decoration: underline;
+        color: lightblue;
+    }
 </style>
 
 <div class="container" style="text-align:center">
@@ -43,13 +53,13 @@
             <div>
                 <div class="d-flex justify-content-between mt-2">
                     <h5 class="text-start">
-                        <a asp-controller="Post"
+                        <a class="links" asp-controller="Post"
                            asp-action=  "DetailedPost"
                            asp-route-id="@Model.ElementAt(i).PostID">@Model.ElementAt(i).Title</a>
                     </h5>
                     <h5 class="text_nowrap">@Model.ElementAt(i).Text</h5>
                     <h5>
-                        Posted by: <a asp-controller="User"
+                        Posted by: <a class="links" asp-controller="User"
                                       asp-action="UserProfile"
                                       asp-route-id="@Model.ElementAt(i).UserId">@Model.ElementAt(i).User.Name</a> @Model.ElementAt(i).User.Credebility creds
                     </h5>
