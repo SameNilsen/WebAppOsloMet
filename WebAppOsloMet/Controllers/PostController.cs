@@ -115,10 +115,16 @@ namespace WebAppOsloMet.Controllers
                 {
                     //  If there is a vote from the logged in user on the post, add it to the list.
                     if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
-                    {
-                        //  Warning: Well, we have already checked if the vote exists, and it does
-                        //            so it will never be a null reference.
-                        votes.Add(post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote);
+                    {                        
+                        var vote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
+                        if (vote != null)
+                        {
+                            votes.Add(vote.Vote);
+                        }
+                        else
+                        {
+                            votes.Add("error");
+                        }
                     }
                     //  If not then the user has not voted yet.
                     else
@@ -148,13 +154,26 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);
             }
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                _logger.LogError("[PostController] User not found for this PostID {PostID:0000}", identityUserId);
+                return vote;
+            }
+
+
             if (post.UserVotes != null)
             {
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
-                {
-                    //  Warning: Well, we have already checked if the vote exists, and it does
-                    //            so it will never be a null reference.
-                    vote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote;
+                {                    
+                    var modelVote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
+                    if (modelVote != null)
+                    {
+                        vote = modelVote.Vote;
+                    }
+                    else
+                    {
+                        vote = "error";
+                    }
                 }
                 else
                 {
@@ -392,10 +411,12 @@ namespace WebAppOsloMet.Controllers
             {
                 //  Finds and returns the vote.
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
-                {
-                    //  Warning: Well, we have already checked if the vote exists, and it does
-                    //            so it will never be a null reference.
-                    return post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
+                {                    
+                    var modelVote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
+                    if (modelVote != null)
+                    {
+                        return modelVote;
+                    }                   
                 }
             }
             //  If the user has not voted on this post before, a new vote element is created.
