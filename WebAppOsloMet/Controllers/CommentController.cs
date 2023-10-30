@@ -34,7 +34,7 @@ namespace WebAppOsloMet.Controllers
                 _logger.LogError("[CommentController] Did not find user {UserID:0000}", id);
                 return NotFound("Did not find user");
             }
-            List<Post> postss = user.Posts;
+            List<Post>? postss = user.Posts;
             List<Post> posts = await _postDbContext.Posts.ToListAsync();
             return View(postss);
         }
@@ -86,10 +86,16 @@ namespace WebAppOsloMet.Controllers
                 //  Set credibility for the commenter:
                 newComment.User.Credebility += 3;
                 await _userRepository.Update(newComment.User);
+
                 //  Set credibility for the posts poster:
                 var post = await _postDbContext.Posts.FindAsync(comment.PostID);
-                post.User.Credebility += 5;
-                await _userRepository.Update(post.User);
+                if (post != null)
+                {
+                    //  If it cannot find the post, the poster will not get creds, which is not
+                    //   detrimental.
+                    post.User.Credebility += 5;
+                    await _userRepository.Update(post.User);
+                }
                 //  Redirects back to the same page, that is the DetailedPost page, using the 
                 //   action method DetailedPost() in the PostController.
                 return RedirectToAction("DetailedPost", "Post", new { id = comment.PostID});

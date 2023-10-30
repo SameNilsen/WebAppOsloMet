@@ -4,7 +4,7 @@ namespace WebAppOsloMet.DAL
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAll();
+        Task<IEnumerable<User>?> GetAll();
         Task<User?> GetItemById(int id);
         Task<User?> GetUserByIdentity(string id);
 

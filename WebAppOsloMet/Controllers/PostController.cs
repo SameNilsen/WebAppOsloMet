@@ -165,7 +165,7 @@ namespace WebAppOsloMet.Controllers
         }
 
         //  This Action method is used for getting the posts belonging to a subforum.
-        public async Task<IActionResult> SubForumPosts(string CurrentViewName)
+        public IActionResult SubForumPosts(string CurrentViewName)
         {
             
             var subForum = CurrentViewName;

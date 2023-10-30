@@ -31,9 +31,18 @@ namespace WebAppOsloMet.DAL
         }
 
         //  Method for getting all posts belonging to a subforum.
-        public IEnumerable<Post> GetBySubForum(string forum)
+        public IEnumerable<Post>? GetBySubForum(string forum)
         {
-            return _db.Posts.Where(x => x.SubForum == forum);  //  A query to get all posts that has the specified forum as SubForum.
+            try
+            {
+                return _db.Posts.Where(x => x.SubForum == forum);  //  A query to get all posts that has the specified forum as SubForum.
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PostRepository post Where(x => x.SubForum == forum) failed when GetBySubForum" +
+                    "  error message: {e}", e.Message);
+                return null;
+            }
         }
 
         //  Method for getting a single post.

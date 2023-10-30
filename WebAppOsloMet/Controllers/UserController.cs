@@ -39,14 +39,21 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);
             }
             user = _userRepository.GetUserByIdentity(id).Result;
+            if (user == null)
+            {
+                _logger.LogError("[UserController] User not found while executing" +
+                    "_postDbContext.Users.FindAsync(id)", id);
+                return NotFound("Did not find user");
+            }
 
-            if (user.Posts.Count() == 0)  //  If the user has no posts to show, a dummy post is created.
+            if (user.Posts?.Count == 0)  //  If the user has no posts to show, a dummy post is created.
             {                
                 return View("Table", new List<Post>() { new Post { User = user, UserId = -1} });                
             }
 
             //  Else the viewpage of Table is returned along with the posts.
-            List<Post> posts = user.Posts;
+            //   At this point we know that user Posts is not null.
+            List<Post>? posts = user.Posts;
             _logger.LogWarning("This is a warning message!");
             return View("Table", posts);
         }
@@ -63,7 +70,7 @@ namespace WebAppOsloMet.Controllers
                 return NotFound("Did not find user");
             }
             //  Returns the posts:
-            List<Post> postss = user.Posts;
+            List<Post>? postss = user.Posts;
             List<Post> posts = await _postDbContext.Posts.ToListAsync();
             return View(postss);
         }
@@ -71,7 +78,7 @@ namespace WebAppOsloMet.Controllers
         //  This Action method is for when the user clicks into the userprofile page of a user.
         public async Task<IActionResult> UserProfile(int id)
         {
-            User user;
+            User? user;
             if (id == -1)
             {
                 //  The user is the logged in user!!
@@ -100,9 +107,10 @@ namespace WebAppOsloMet.Controllers
             }
 
             //  This method returns a ViewModel with all the users posts, comments and votes.
-            List<Post> posts = user.Posts;
-            List<Comment> comments = user.Comments;
-            List<Upvote> votes = user.UserVotes;
+            //   They can be null.
+            List<Post>? posts = user.Posts;
+            List<Comment>? comments = user.Comments;
+            List<Upvote>? votes = user.UserVotes;
             var userProfileViewModel = new UserProfileViewModel(posts, comments, votes, user);
             return View(userProfileViewModel);
         }
