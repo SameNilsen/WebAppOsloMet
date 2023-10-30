@@ -284,8 +284,8 @@ namespace WebAppOsloMet.Controllers
                     bool returnOk = await _postRepository.Create(newPost);
                     if (returnOk)
                     {
-                        user.Credebility += 7;  //  When creating a post the user gets added score of 7 to their "Credebility".
-                        await _userRepository.Update(user);
+                        post.User.Credebility += 7;  //  When creating a post the user gets added score of 7 to their "Credebility".
+                        await _userRepository.Update(post.User);
                         return RedirectToAction(nameof(Posts));
                     }
                 }
