@@ -162,7 +162,15 @@
             </th>
                 <th>Actions</th>
             </tr>
-            @foreach (var comment in Model.Post.Comments)
+            @{
+                //  This bit is for avoiding null-reference.
+                List<Comment>? comments = Model.Post.Comments;
+                if (comments == null)
+                {
+                    comments = new List<Comment>();
+                }
+            }
+            @foreach (var comment in comments)
             {
                 <tr>
                 <td style="display: none">@comment.CommentID</td>

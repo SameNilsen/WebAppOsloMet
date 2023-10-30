@@ -7,7 +7,7 @@ namespace WebAppOsloMet.ViewModels
         public IEnumerable<Post>? Posts;
         public IEnumerable<Comment>? Comments;
         public IEnumerable<Upvote>? Votes;
-        public User? User;
+        public User User;
 
         public UserProfileViewModel(IEnumerable<Post>? posts, IEnumerable<Comment>? comments, IEnumerable<Upvote>? votes, User user)
         {

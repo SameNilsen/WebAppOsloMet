@@ -40,14 +40,30 @@
                    asp-route-id="@Model.User.UserId">posts</a>
     </h3>
 
-    <h2>Number of comments: @Model.Comments.Count()</h2>
+    <h2>
+        Number of comments: @if (Model.Comments != null)
+        {
+            <a>@Model.Comments.Count()</a>
+        }
+        else
+        {
+            <a>0</a>
+        }
+    </h2>
     <h3>
         See all <a asp-controller="User"
                    asp-action="Comments"
                    asp-route-userID="@Model.User.UserId">comments</a>
     </h3>
 
-    <h2>Number of votes: @Model.Votes.Count()</h2>
+    <h2>Number of votes: @if (Model.Votes != null)
+        {
+            <a>@Model.Votes.Count()</a>
+        }
+        else
+        {
+            <a>0</a>
+        }</h2>
     <h3>
         See all <a asp-controller="User"
                    asp-action="Votes"

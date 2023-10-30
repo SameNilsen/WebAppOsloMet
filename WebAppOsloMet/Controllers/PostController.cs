@@ -102,6 +102,11 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);
             }
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                _logger.LogError("[PostController] User not found for this PostID {PostID:0000}", identityUserId);
+                return votes;
+            }
             //  --->
 
             foreach (var post in posts)  // For loop to get the vote from each post.
@@ -147,6 +152,8 @@ namespace WebAppOsloMet.Controllers
             {
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                 {
+                    //  Warning: Well, we have already checked if the vote exists, and it does
+                    //            so it will never be a null reference.
                     vote = post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post).Vote;
                 }
                 else
@@ -375,12 +382,18 @@ namespace WebAppOsloMet.Controllers
                 await _userRepository.Create(newUser);             
             }
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
+            if (user == null)
+            {
+                return new Upvote { UserId = -1};
+            }
             //  --->
             if (post.UserVotes != null)  //  Check to see if there are any votes on that post.
             {
                 //  Finds and returns the vote.
                 if (post.UserVotes.Exists(x => x.UserId == user.UserId && x.Post == post))
                 {
+                    //  Warning: Well, we have already checked if the vote exists, and it does
+                    //            so it will never be a null reference.
                     return post.UserVotes.FirstOrDefault(x => x.UserId == user.UserId && x.Post == post);
                 }
             }
@@ -402,8 +415,20 @@ namespace WebAppOsloMet.Controllers
         {
             
             var post = await _postRepository.GetItemById(id);  //  Finds the post in question.
-           
+
+            if (post == null)
+            {
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
+            }
+
             var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
+
+            if (vote.UserId == -1)
+            {
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
+            }
 
             //  If the user has upvoted the post before then nothing should happen. Else if
             //   the user has not voted or the previous vote was a downvote:
@@ -437,6 +462,12 @@ namespace WebAppOsloMet.Controllers
         {
             
             var post = await _postRepository.GetItemById(id);  //  Finds the post in question.
+
+            if (post == null)
+            {
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
+            }
 
             var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
 

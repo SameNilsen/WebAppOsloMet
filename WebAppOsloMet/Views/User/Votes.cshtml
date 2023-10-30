@@ -2,9 +2,16 @@
 
 @{
     var user = ViewData["User"] as User;
+    if (user == null)
+    {
+        <h1 style="text-align:center">Votes by user</h1>
+    }
+    else
+    {
+        <h1 style="text-align:center">Votes by @user.Name</h1>
+        
+    }
 }
-
-<h1 style="text-align:center">Votes by @user.Name</h1>
 
 
 <table class="table table-striped">
