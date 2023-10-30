@@ -61,7 +61,7 @@ namespace WebAppOsloMet.Controllers
                     "_postRepository.GetAll()");
                 return NotFound("List of posts not found");
             }
-            
+            ViewData["Votes"] = getVoteViewData(posts).Result;  //  Gets all votes from the logged in user and puts it in a ViewData object.
             var postListViewModel = new PostListViewModel(posts, "Card");
             return View(postListViewModel);
         }
@@ -271,7 +271,7 @@ namespace WebAppOsloMet.Controllers
                     Title = post.Title,
                     Text = post.Text,
                     ImageUrl = post.ImageUrl,
-                    PostDate = DateTime.Now.ToString("dd.MM.yyyy\nHH:mm:ss"),
+                    PostDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                     UserId = post.UserId,
                     User = post.User,
                     SubForum = post.SubForum

@@ -1,17 +1,11 @@
 ﻿@model PostListViewModel
 
+@{
+    ViewData["Title"] = "Posts";
+}
+
 <h1 style="text-align:center;">Main Feed</h1>
 
-<div class="container" style="text-align:center">
-    <a class="btn btn-secondary"
-        asp-controller="Post"
-        asp-action="Create">Create Post</a>
-    <a class="btn btn-secondary" href="/Post/Posts">Classic View</a>
-</div>
-
 <div>
-    @foreach (var post in Model.Posts)
-    {
-        <partial name="_PostsCard" model="post" />
-    }
+    <partial name="_PostsCard" model="Model.Posts" />
 </div>

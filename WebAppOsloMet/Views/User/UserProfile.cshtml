@@ -1,43 +1,48 @@
 ﻿@model UserProfileViewModel
 
-<h1>UserProfile for: @Model.User.Name</h1>
-
-@* This page is for displaying the Userprofile of a user. If this page is the userprofile for 
-    the logged in user, then there is also a button redirecting to the Manage Account page 
-     provided by Microsoft.AspNetCore.Identity.
-*@
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-@if (SignInManager.IsSignedIn(User) && Model.User.IdentityUserId == UserManager.GetUserId(User))
-{
-    <h3>Manage <a asp-area="Identity" asp-page="/Account/Manage/Index">account</a></h3>
+@{
+    ViewData["Title"] = "Profile";
 }
-<h2>Credebility</h2>
-<h3>Credebility score: @Model.User.Credebility creds</h3>
-<h4>
-    Read <a asp-controller="User"
-            asp-action="CredsInfo">more</a>
-</h4>
+<div style="margin: auto">
+    <h1>UserProfile for: @Model.User.Name</h1>
 
-<h2>Number of posts: @Model.Posts.Count()</h2>
-<h3>
-    See all <a asp-controller="User"
-               asp-action="Table"
-               asp-route-id="@Model.User.UserId">posts</a>
-</h3>
+    @* This page is for displaying the Userprofile of a user. If this page is the userprofile for
+    the logged in user, then there is also a button redirecting to the Manage Account page
+    provided by Microsoft.AspNetCore.Identity.
+    *@
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+    @inject UserManager<IdentityUser> UserManager
 
-<h2>Number of comments: @Model.Comments.Count()</h2>
-<h3>
-    See all <a asp-controller="User"
-               asp-action="Comments"
-               asp-route-userID="@Model.User.UserId">comments</a>
-</h3>
+    @if (SignInManager.IsSignedIn(User) && Model.User.IdentityUserId == UserManager.GetUserId(User))
+    {
+        <h3>Manage <a asp-area="Identity" asp-page="/Account/Manage/Index">account</a></h3>
+    }
+    <h2>Credebility</h2>
+    <h3>Score: @Model.User.Credebility creds</h3>
+    <h4>
+        Read <a asp-controller="User"
+                asp-action="CredsInfo">more</a>
+    </h4>
 
-<h2>Number of votes: @Model.Votes.Count()</h2>
-<h3>
-    See all <a asp-controller="User"
-               asp-action="Votes"
-               asp-route-userID="@Model.User.UserId">votes</a>
-</h3>
+    <h2>Number of posts: @Model.Posts.Count()</h2>
+    <h3>
+        See all <a asp-controller="User"
+                   asp-action="Table"
+                   asp-route-id="@Model.User.UserId">posts</a>
+    </h3>
+
+    <h2>Number of comments: @Model.Comments.Count()</h2>
+    <h3>
+        See all <a asp-controller="User"
+                   asp-action="Comments"
+                   asp-route-userID="@Model.User.UserId">comments</a>
+    </h3>
+
+    <h2>Number of votes: @Model.Votes.Count()</h2>
+    <h3>
+        See all <a asp-controller="User"
+                   asp-action="Votes"
+                   asp-route-userID="@Model.User.UserId">votes</a>
+    </h3>
+</div>

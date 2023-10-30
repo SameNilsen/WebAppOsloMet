@@ -2,26 +2,25 @@
 
 @{
     var user = ViewData["User"] as User;
+    ViewData["Title"] = "User comments";
+
 }
 
-<h1>Comments by @user.Name</h1>
-
+<h1 style="text-align:center">Comments by @user.Name</h1>
 
 <table class="table table-striped">
     <tr>
-        <th>Id</th>
+        <th style="display: none">ID</th>
         <th>Comment</th>
-        <th>PostDate</th>
-        <th>PostID</th>
+        <th>Date</th>
         <th>Post</th>
     </tr>
     @foreach (var comment in Model)
     {
         <tr>
-            <td>@comment.CommentID</td>
+            <td style="display: none">@comment.CommentID</td>
             <td>@comment.CommentText</td>
             <td>@comment.PostDate</td>
-            <td>@comment.PostID</td>
             <td>
                 <a asp-controller="Post"
                    asp-action="DetailedPost"
