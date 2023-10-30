@@ -25,7 +25,15 @@
                 asp-action="CredsInfo">more</a>
     </h4>
 
-    <h2>Number of posts: @Model.Posts.Count()</h2>
+    <h2>Number of posts: @if (Model.Posts != null)
+        {
+            <a>@Model.Posts.Count()</a>
+        }
+        else
+        {
+            <a>asd</a>
+        }
+    </h2>
     <h3>
         See all <a asp-controller="User"
                    asp-action="Table"
