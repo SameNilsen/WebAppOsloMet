@@ -1,4 +1,7 @@
-﻿<div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
+﻿@* Carousel *@
+
+<div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel indicators -->
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
@@ -7,13 +10,19 @@
         <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="3" aria-label="Slide 4"></button>
         <button type="button" data-bs-target="#carouselImages" data-bs-slide-to="4" aria-label="Slide 5"></button>
     </div>
+
+    <!-- Images and arrows -->
     <div class="carousel-inner" style="text-align: center">
+
+        <!-- Indicator arrows -->
         <a class="carousel-control-prev" data-bs-target="#carouselImages" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         </a>
         <a class="carousel-control-next" data-bs-target="#carouselImages" role="button" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
         </a>
+
+        <!-- Images (5) -->
         <div class="carousel-item active">
             <img src="~/images/ryokan.jpg" class="w-50 h-50" alt="post 1">
         </div>

@@ -60,7 +60,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
-// Logger (skru av og på)
+// Logger
 /*var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
@@ -84,6 +84,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// Authentication
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();

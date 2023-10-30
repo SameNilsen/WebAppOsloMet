@@ -3,29 +3,32 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 2nd Tab title (displayed in every page) -->
     <title>@ViewData["Title"] - EpicForum.NO</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WebAppMVC.styles.css" asp-append-version="true" /> *@
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     <script src="~/lib/jquery/jquery.js"></script>
 </head>
 <body>
-    @using Microsoft.AspNetCore.Identity
-    @inject SignInManager<IdentityUser> SignInManager
-    @inject UserManager<IdentityUser> UserManager
     <header>
-        @* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"> *@
+        
+        @* Navbar *@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <!-- Company brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/epicforum.no.png" alt="EpicForum.NO" height="35px" width="235px"/>
                 </a>
+
+                <!-- Navbar toggler -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <!-- Navigation bar -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -37,23 +40,22 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Post" asp-action="SubForumPosts" asp-route-CurrentViewName="Gaming">Subforums</a>
                         </li>
-                        @*<li class="nav-item">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                <a class="nav-link" asp-area="" asp-controller="User" asp-action="MyPosts" asp-route-id="@UserManager.GetUserId(User)">MyPosts</a>
-                            }
-                              else
-                            {
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Table" asp-route-id="">MyPosts</a>
-                            }
-                        </li>*@
+
+                        @* Injections for logged in users *@
+                        @using Microsoft.AspNetCore.Identity
+                        @inject SignInManager<IdentityUser> SignInManager
+                        @inject UserManager<IdentityUser> UserManager
+
+                        <!-- If signed in, "profile" becomes available -->
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="User" asp-action="UserProfile" asp-route-id="-1">Profile</a>
                             </li>
                         }
+
                     </ul>
+                    <!-- Register and login -->
                     <partial name="_LoginPartial" />
                 </div>
             </div>

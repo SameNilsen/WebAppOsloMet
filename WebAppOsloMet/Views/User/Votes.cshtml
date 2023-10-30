@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<Upvote>
 
+@* List of all votes from a user *@
+
 @{
     var user = ViewData["User"] as User;
+    ViewData["Title"] = "User votes";
+
     if (user == null)
     {
         <h1 style="text-align:center">Votes by user</h1>
@@ -13,12 +17,13 @@
     }
 }
 
-
 <table class="table table-striped">
     <tr>
         <th>Post</th>
         <th>Vote</th>
     </tr>
+
+    <!-- Loop through all their votes -->
     @foreach (var vote in Model)
     {
         <tr>

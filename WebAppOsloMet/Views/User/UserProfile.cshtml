@@ -1,32 +1,43 @@
 ﻿@model UserProfileViewModel
 
+@* User Profile *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Profile";
 }
-<div style="margin: auto">
-    <h1>UserProfile for: @Model.User.Name</h1>
+<div style="margin: 0 auto; text-align:center">
+    <!-- Username -->
+    <h1>User profile for: @Model.User.Name</h1>
 
     @* This page is for displaying the Userprofile of a user. If this page is the userprofile for
     the logged in user, then there is also a button redirecting to the Manage Account page
     provided by Microsoft.AspNetCore.Identity.
     *@
+
     @using Microsoft.AspNetCore.Identity
     @inject SignInManager<IdentityUser> SignInManager
     @inject UserManager<IdentityUser> UserManager
 
+    <!-- Manage account -->
     @if (SignInManager.IsSignedIn(User) && Model.User.IdentityUserId == UserManager.GetUserId(User))
     {
         <h3>Manage <a asp-area="Identity" asp-page="/Account/Manage/Index">account</a></h3>
     }
+
     <br />
+
+    <!-- Credibility score -->
     <h2>Credebility</h2>
     <h3>Score: @Model.User.Credebility creds</h3>
     <h4>
         Read <a asp-controller="User"
                 asp-action="CredsInfo">more</a>
     </h4>
+
     <br />
 
+    <!-- Number of posts posted -->
     <h2>Number of posts: @if (Model.Posts != null)
         {
             <a>@Model.Posts.Count()</a>
@@ -43,6 +54,7 @@
     </h3>
     <br />
 
+    <!-- Number of comments commented -->
     <h2>
         Number of comments: @if (Model.Comments != null)
         {
@@ -58,8 +70,10 @@
                    asp-action="Comments"
                    asp-route-userID="@Model.User.UserId">comments</a>
     </h3>
+
     <br />
 
+    <!-- Number of votes voted -->
     <h2>Number of votes: @if (Model.Votes != null)
         {
             <a>@Model.Votes.Count()</a>

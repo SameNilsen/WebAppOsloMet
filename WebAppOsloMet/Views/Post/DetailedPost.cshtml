@@ -83,7 +83,7 @@
 
                 @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
                 {
-                    <!-- EDIT and DELETE buttons only accessible after logging in -->
+                    <!-- EDIT and DELETE buttons (only accessible after logging in) -->
                     <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Edit</a>
                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-danger">Delete</a>
                 }
@@ -97,7 +97,7 @@
                 @{
                     //  This is a complicated way of writing:
                     //    string vote = ViewData["Vote"].ToString();
-                    //   but this way gives warnings of possible null reference. Since both the ToStrin()
+                    //   but this way gives warnings of possible null reference. Since both the ToString()
                     //   method and ViewData[] method gives this warning, this is implemented.
                     string vote = (ViewData["Vote"] ?? "").ToString() ?? "";
                 }
@@ -136,7 +136,6 @@
 
     @* COMMENTS *@
     <div class="container">
-
         @* Create new comment *@
         <p>
             @* The javascript code is to toggle on and off the input field for creating or editing a comment. *@
@@ -164,10 +163,12 @@
                     }
                 }
             </script>
-            <button class="btn btn-secondary"
-                onclick="fun('newComment')">Comment</button>
+
+            <!-- COMMENT button -->
+            <button class="btn btn-secondary" onclick="fun('newComment')">Comment</button>
         </p>
-        @* This form is for sending the new comment to the controller. *@
+
+        @* This form is for sending the new comment to the controller *@
         <div asp-validation-summary="All" class="text-danger"></div>
         <div id="newComment" style="display:none">
             @using(Html.BeginForm("Create", "Comment"))
@@ -178,8 +179,9 @@
             }
         </div>
 
-        @* Displaying all comments. *@
+        @* Displaying all comments in a table *@
         <h1>@ViewBag.CurrentViewName</h1>
+
         <table class="table table-striped">
             <tr>
                 <th>Comment</th>
@@ -191,44 +193,49 @@
             </th>
                 <th>Actions</th>
             </tr>
+
             @{
-                //  This bit is for avoiding null-reference.
+                // This part is for avoiding null-reference
                 List<Comment>? comments = Model.Post.Comments;
                 if (comments == null)
                 {
                     comments = new List<Comment>();
                 }
             }
+                
+            @* Going through all comments *@
             @foreach (var comment in comments)
             {
                 <tr>
-                <td style="display: none">@comment.CommentID</td>
-                    @* <---  This block is for editing and deleting a comment. *@
+                    @* <---  This block is for editing and deleting a comment *@
                     <td>
                         <div id="editON @comment.CommentID" style="display:none">
                             @using (Html.BeginForm("Update", "Comment"))
                             {
-                                <textarea type="text" name="CommentText" value="@comment.CommentText"></textarea>
+                                <input type="text" name="CommentText" value="@comment.CommentText">
                                 <input type="text" name="CommentID" value="@comment.CommentID" hidden />
                                 <input type="text" name="PostDate" value="@comment.PostDate" hidden />
                                 <input type="text" name="UserId" value="@comment.UserId" hidden />
                                 <input type="text" name="PostID" value="@comment.PostID" hidden />
                                 <button style="margin: 0px 0px 10px 5px" type="submit" class="btn btn-primary">Post</button>
                             }
+                            <!-- DELETE button -->
                             <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>
                     <div id="editOFF @comment.CommentID" style="display:block">@comment.CommentText</div>
-                    @* ---> *@
+                    @* -----> *@
+
                     </td>
                     <td>@comment.PostDate</td>
                     <td>@comment.User.Name</td>
                     <td>@comment.User.Credebility</td>
                     <td>
-                        @* This is to make sure that one can only edit the comment you yourself has made. *@
+                        @* This is to make sure that one can only edit the comment you yourself has made *@
                         @if (SignInManager.IsSignedIn(User) && comment.User.IdentityUserId == UserManager.GetUserId(User))
                         {
+                            // EDIT button
                             <button class="btn btn-secondary"
                                         onclick="toggleEdit(@comment.CommentID)">
                                     Edit

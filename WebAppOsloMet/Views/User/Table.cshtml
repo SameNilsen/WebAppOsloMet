@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<Post>
 
+@* List of all posts posted by a user *@
+
+@{
+    ViewData["Title"] = "User posts";
+}
+
+<!-- Checks is something is posted or not -->
 @if (Model.Count() > 0)
 {
     <h2 style="text-align: center">List of posts from user: @Model.ElementAtOrDefault(0).User.Name</h2>
@@ -9,6 +16,7 @@ else
     <h2 style="text-align: center">User has not posted anything yet</h2>
 }
 
+<!-- Loop through all their posts -->
 @foreach (var post in Model)
 {
     @if (post.UserId != -1)
