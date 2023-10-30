@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
-using WebAppOsloMet.DAL;
 using WebAppOsloMet.Models;
-using WebAppOsloMet.ViewModels;
 
 namespace WebAppOsloMet.Controllers
 {

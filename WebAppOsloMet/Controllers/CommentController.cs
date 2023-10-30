@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebAppOsloMet.Models;
 using Microsoft.EntityFrameworkCore;
-using WebAppOsloMet.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using WebAppOsloMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
-using Humanizer;
 
 namespace WebAppOsloMet.Controllers
 {

@@ -143,9 +143,9 @@
         <div id="newComment" style="display:none">
             @using(Html.BeginForm("Create", "Comment"))
             {
-                <input type="text" name="CommentText">
-                <!--<input type="text" name="PostID" value="@Model.Post.PostID" hidden/>-->
-                <button style="margin: 0px 0px 5px 10px"type="submit" class="btn btn-primary">Post</button>
+                <textarea type="text" name="CommentText"></textarea>
+                <input type="text" name="PostID" value="@Model.Post.PostID" hidden/>
+                <button style="margin: 0px 0px 10px 5px" type="submit" class="btn btn-primary">Post</button>
             }
         </div>
 
@@ -171,12 +171,12 @@
                         <div id="editON @comment.CommentID" style="display:none">
                             @using (Html.BeginForm("Update", "Comment"))
                             {
-                                <input type="text" name="CommentText" value="@comment.CommentText">
+                                <textarea type="text" name="CommentText" value="@comment.CommentText"></textarea>
                                 <input type="text" name="CommentID" value="@comment.CommentID" hidden />
                                 <input type="text" name="PostDate" value="@comment.PostDate" hidden />
                                 <input type="text" name="UserId" value="@comment.UserId" hidden />
                                 <input type="text" name="PostID" value="@comment.PostID" hidden />
-                                <button style="margin: 0px 0px 5px 10px" type="submit" class="btn btn-primary">Post</button>
+                                <button style="margin: 0px 0px 10px 5px" type="submit" class="btn btn-primary">Post</button>
                             }
                             <form asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentID" method="post">
                                 <button type="submit" class="btn btn-danger">Delete</button>
