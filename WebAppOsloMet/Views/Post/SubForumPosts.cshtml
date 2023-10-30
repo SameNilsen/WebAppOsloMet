@@ -1,13 +1,19 @@
 ﻿@model SubForumPostListViewModel
 
+@* Subforum *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Subforums";
 }
 
+<!-- Title -->
 <h1 style="text-align:center;">Sub Forum</h1>
 <h2 style="text-align:center;">@Model.CurrentViewName</h2>
-@* The javascript is for setting the attributes of the request to the controller when selecting
-    a forum from the subforum dropdownlist.
+
+@* 
+    The javascript is for setting the attributes of the request to the controller when selecting
+    a forum from the subforum dropdownlist
 *@
 <script>
     function sub() {
@@ -19,12 +25,12 @@
     }
 </script>
 
+<!-- Dropdown-list which is also a form -->
 <form asp-controller="Post" asp-action="SubForumPosts" id="formID" style="margin: 10px" >
     <select onchange="sub()" asp-for="CurrentViewName" asp-items="Model.SubForumSelectList" class="form-control" id="selectID">
         <option value="">Select a subforum...</option>
     </select>
 </form>
 
+<!-- Inherits another view called _PostsTable in order to show the respective posts for this subforum -->
 <partial name="_PostsTable" model="Model.Posts" />
-
-

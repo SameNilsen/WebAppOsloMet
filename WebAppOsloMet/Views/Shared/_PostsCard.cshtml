@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<Post>
+
+@* Card View *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Main Feed";
 }
+
+@* Style sheet for upvote/downvote buttons *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
+    /* Styling upvote/downvote buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
     .btn-arrow-up {
         color: black; /* White text */
         padding: 12px 16px; /* Some padding */
@@ -18,17 +24,18 @@
         font-size: 16px; /* Set a font size */
         cursor: pointer; /* Mouse pointer on hover */
     }
+
     /* Red background on mouse-over */
     .btn-arrow-up:hover {
         color: rgb(193, 26, 26);
     }
 
-    /* blue background on mouse-over */
+    /* Blue background on mouse-over */
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
     }
 
-    /* links */
+    /* Styling the links */
     .links {
         text-decoration: none;
     }
@@ -39,52 +46,75 @@
     }
 </style>
 
+@* CREATE and CLASSIC view buttons *@
 <div class="container" style="text-align:center">
     <a class="btn btn-secondary"
        asp-controller="Post"
        asp-action="Create">Create Post</a>
     <a class="btn btn-secondary" href="/Post/Posts">Classic View</a>
 </div>
-<div style="max-width:1000px; margin: 0 auto">
+
+@* Posts (main feed) *@
+<div style="max-width:1000px; margin: 0 auto; text-align:center">
     <div style="margin: 0 auto">
+
+        <!-- Loop through the existing posts -->
         @for (int i = 0; i < Model.Count(); i++)
         {
-            <img src="@Model.ElementAt(i).ImageUrl" style="max-width:1000px; max-height:1000px" class="card-img-top" alt="@Model.ElementAt(i).Title">
+            <img src="@Model.ElementAt(i).ImageUrl" 
+            style="max-width:600px; max-height:600px; margin-top:10px; margin-bottom:10px" 
+            class="card-img-top" alt="@Model.ElementAt(i).Title">
+
             <div>
                 <div class="d-flex justify-content-between mt-2">
+
+                    <!-- Title -->
                     <h5 class="text-start">
                         <a class="links" asp-controller="Post"
                            asp-action=  "DetailedPost"
                            asp-route-id="@Model.ElementAt(i).PostID">@Model.ElementAt(i).Title</a>
                     </h5>
+
+                    <!-- Description text -->
                     <h5 class="text_nowrap">@Model.ElementAt(i).Text</h5>
+
+                    <!-- User -->
                     <h5>
                         Posted by: <a class="links" asp-controller="User"
                                       asp-action="UserProfile"
                                       asp-route-id="@Model.ElementAt(i).UserId">@Model.ElementAt(i).User.Name</a> @Model.ElementAt(i).User.Credebility creds
                     </h5>
+
+                    <!-- Post date -->
                     <h5 class="pull-right">@Model.ElementAt(i).PostDate</h5>
+
+                        @* The voting buttons *@
                         @{
                             //  Gets the votes from the controller in a ViewData, and formats it as
                             //   a list. Checks if the user has voted on the post before, and displays
                             //    the correct arrows with correct colors.
                             var votes = ViewData["Votes"] as List<string>;
                         }
+                        @* UPVOTES *@
                         @if (@votes.ElementAt(i) == "upvote")
                         {
                             <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                             <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                         }
+                        @* DOWNVOTES *@
                         else if (@votes.ElementAt(i) == "downvote")
                         {
                             <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                             <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                         }
+                        @* DEFAULT *@
                         else
                         {
                             <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                             <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                         }
+
+                    <!-- Vote count -->
                     <span>@Model.ElementAt(i).UpvoteCount</span>
                 </div>
             </div>

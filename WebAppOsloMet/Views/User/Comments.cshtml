@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<Comment>
 
+@* List of all comments commented by a user *@
+
 @{
     var user = ViewData["User"] as User;
     ViewData["Title"] = "User comments";
-
 }
 
 @{
@@ -20,15 +21,15 @@
 
 <table class="table table-striped">
     <tr>
-        <th style="display: none">ID</th>
         <th>Comment</th>
         <th>Date</th>
         <th>Post</th>
     </tr>
+
+    <!-- Loop through all their comments -->
     @foreach (var comment in Model)
     {
         <tr>
-            <td style="display: none">@comment.CommentID</td>
             <td>@comment.CommentText</td>
             <td>@comment.PostDate</td>
             <td>

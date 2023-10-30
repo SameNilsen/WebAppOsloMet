@@ -3,6 +3,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+@* Login message and logout navbar-buttons (if logged in) *@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
@@ -15,6 +16,7 @@
         </form>
     </li>
 }
+@* Else, REGISTER and LOGIN navbar-buttons will be displayed *@
 else
 {
     <li class="nav-item">

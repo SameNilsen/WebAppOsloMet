@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<Post>
 
+@* Classic View *@
+
+@* Style sheet for upvote/downvote buttons *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
+    /* Styling upvote/downvote buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
     .btn-arrow-up {
         color: black; /* White text */
         padding: 12px 16px; /* Some padding */
@@ -21,12 +24,12 @@
         color: rgb(193, 26, 26);
     }
 
-    /* blue background on mouse-over */
+    /* Blue background on mouse-over */
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
     }
 
-    /* links */
+    /* Styling the links */
     .links {
         text-decoration: none;
     }
@@ -37,6 +40,7 @@
     }
 </style>
 
+@* CREATE and CARD view buttons *@
 <div class="container" style="text-align:center">
     <div>
         <a class="btn btn-secondary"
@@ -44,6 +48,10 @@
             asp-action="Create">Create Post</a>
         <a class="btn btn-secondary" href="/Post/Card">Card View</a>
     </div>
+</div>
+
+@* Posts (main feed) --> *@
+<div style="text-align:center">
     <h1>@ViewBag.CurrentViewName</h1>
     <table class="table table-striped">
         <tr>
@@ -55,24 +63,30 @@
             <th>Actions</th>
             <th>Votes</th>
         </tr>
-        @for (int i = 0; i < Model.Count(); i++)
+
         @* @foreach (var post in Model) *@
+        @for (int i = 0; i < Model.Count(); i++)
         {
             <tr>
-                <td style="display: none">@Model.ElementAt(i).PostID</td>
                 <td>
+                    <!-- Title (a link to the detailed view of this post) -->
                     <a class="links" asp-controller="Post"
                        asp-action="DetailedPost"
                        asp-route-id="@Model.ElementAt(i).PostID"
                        >@Model.ElementAt(i).Title</a>
                 </td>
-                @* Det over her er en link til detailed view av en post. *@
+
+                <!-- Post date -->
                 <td>@Model.ElementAt(i).PostDate</td>
+
+                <!-- User -->
                 <td>@Model.ElementAt(i).User.Name</td>
                 <td>
+                    <!-- Image -->
                     <img src="@Model.ElementAt(i).ImageUrl" alt="Post image" style="max-width: 100px; max-height: 100px;" />
                 </td>
                 <td>
+                    @* The voting buttons *@
                     @{
                         //  Gets the votes from the controller in a ViewData, and formats it as 
                         //   a list. Checks if the user has voted on the post before, and displays
@@ -89,24 +103,29 @@
                             }
                         }
                     }
+                    @* UPVOTE *@
                     @if (@votes.ElementAt(i) == "upvote")
                     {
                         <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                         <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                     }
+                    @* DOWNVOTE *@
                     else if (@votes.ElementAt(i) == "downvote")
                     {
                         <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                         <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                     }
+                    @* DEFAULT *@
                     else
                     {
                         <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-up"></i></a>
                         <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.ElementAt(i).PostID"><i class="fa fa-arrow-down"></i></a>
                     }
 
+                    <!-- Link to the detailed view of this post -->
                     <a class="btn btn-secondary" asp-controller="Post" asp-action="DetailedPost" asp-route-id="@Model.ElementAt(i).PostID">Reply</a>
                 </td>
+                <!-- Vote count -->
                 <td>@Model.ElementAt(i).UpvoteCount</td>
             </tr>
         }
