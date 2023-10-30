@@ -78,6 +78,16 @@
                         //   a list. Checks if the user has voted on the post before, and displays
                         //    the correct arrows with correct colors.
                         var votes = ViewData["Votes"] as List<string>;
+                        if (votes == null)
+                        {
+                            //  If the viewdata doesnt contain any votes, then an error occured at server. A dummy list
+                            //   with the same length as list of posts is created with dummy values.
+                            votes = new List<string>();
+                            for (int o = 0; o < Model.Count(); o++)
+                            {
+                                votes.Add("blank");
+                            }
+                        }
                     }
                     @if (@votes.ElementAt(i) == "upvote")
                     {
