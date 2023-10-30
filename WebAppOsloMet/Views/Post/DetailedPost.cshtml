@@ -1,12 +1,16 @@
 ﻿@model PostDetailsViewModel
 
+@* Detailed View *@
+
 @{
+    // Tab title
     ViewData["Title"] = @Model.Post.Title;
 }
 
+@* Style sheet for upvote/downvote buttons *@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    /* Style buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
+    /* Styling upvote/downvote buttons, from https://www.w3schools.com/howto/howto_css_icon_buttons.asp */
     .btn-arrow-up {
         color: black; /* White text */
         padding: 5px 8px; /* Some padding */
@@ -22,17 +26,18 @@
         margin: 0px 10px 0px 10px; /* Some margin */
         cursor: pointer; /* Mouse pointer on hover */
     }
+
     /* Red background on mouse-over */
     .btn-arrow-up:hover {
         color: rgb(193, 26, 26);
     }
 
-    /* blue background on mouse-over */
+    /* Blue background on mouse-over */
     .btn-arrow-down:hover {
         color: rgb(20, 130, 167);
     }
 
-    /* links */
+    /* Styling the links */
     .links {
         text-decoration: none;
     }
@@ -42,35 +47,52 @@
     }
 </style>
 
-    <h3 class="my-5">
-        @Model.Post.Title
-    </h3>
+    <!-- Title -->
+    <h3 class="my-5">@Model.Post.Title</h3>
 
     <div class="row gx-5">
+
+        <!-- Image -->
         <img alt="@Model.Post.ImageUrl" src="@Model.Post.ImageUrl" class="img-fluid col-5" />
+
         <div class="col-7">
+            <!-- Description Text -->
             <h5>@Model.Post.Text</h5>
+
+            <!-- Name of user and their credibility score -->
             <h5>Posted by: <a class="links" asp-controller="User" 
                                 asp-action="UserProfile"
                           asp-route-id="@Model.Post.UserId">@Model.User.Name</a> <span>@Model.User.Credebility creds</span>
             </h5>
+
             <hr />
+
+            <!-- BUTTONS -->
             <div style="margin-bottom:10px">
-                @* These are injected because some buttons like update and delete
-                should only by available if the post is created by the logged in user.
+                @* 
+                    These are injected because some buttons like update and delete
+                    should only by available if the post is created by the logged in user.
                 *@
+
                 @using Microsoft.AspNetCore.Identity
                 @inject SignInManager<IdentityUser> SignInManager
                 @inject UserManager<IdentityUser> UserManager
 
+                <!-- BACK button -->
                 <a class="btn btn-secondary" href="/Post/Posts">Back</a>
+
                 @if (SignInManager.IsSignedIn(User) && Model.Post.User.IdentityUserId == UserManager.GetUserId(User))
                 {
+                    <!-- EDIT and DELETE buttons only accessible after logging in -->
                     <a asp-controller="Post" asp-action="Update" asp-route-id="@Model.Post.PostID" class="btn btn-secondary">Edit</a>
                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.PostID" class="btn btn-danger">Delete</a>
                 }
+
+                <!-- Post date -->
                 <h5 class="pull-right">@Model.Post.PostDate</h5>
             </div>
+
+            @* The voting buttons *@
             <div>
                 @{
                     //  This is a complicated way of writing:
@@ -79,22 +101,28 @@
                     //   method and ViewData[] method gives this warning, this is implemented.
                     string vote = (ViewData["Vote"] ?? "").ToString() ?? "";
                 }
+                @* UPVOTE *@
                 @if (vote == "upvote")
                 {
                     <a class="btn-arrow-up" style="color: rgb(193, 26, 26);" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
                     <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
                 }
+                @* DOWNVOTE *@
                 else if (vote == "downvote")
                 {
                     <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
                     <a class="btn-arrow-down" style="color: rgb(20, 130, 167);" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
                 }
+                @* DEFAULT *@
                 else
                 {
                     <a class="btn-arrow-up" asp-action="UpVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-up"></i></a>
                     <a class="btn-arrow-down" asp-action="DownVote" asp-route-id="@Model.Post.PostID"><i class="fa fa-arrow-down"></i></a>
                 }
+                <!-- Vote count -->
                 <span style="font-size:20px">@Model.Post.UpvoteCount</span>
+
+                <!-- Link to the post's subforum -->
                 <h5 class="pull-right">
                     <a class="links" asp-controller="Post"
                         asp-action="SubForumPosts"
@@ -106,9 +134,10 @@
 
     <br />
 
-    @* COMMENTS: *@
+    @* COMMENTS *@
     <div class="container">
-        @* Create new Comment: *@
+
+        @* Create new comment *@
         <p>
             @* The javascript code is to toggle on and off the input field for creating or editing a comment. *@
             <script>
@@ -143,7 +172,7 @@
         <div id="newComment" style="display:none">
             @using(Html.BeginForm("Create", "Comment"))
             {
-                <textarea type="text" name="CommentText"></textarea>
+                <textarea cols="50" type="text" name="CommentText"></textarea>
                 <input type="text" name="PostID" value="@Model.Post.PostID" hidden/>
                 <button style="margin: 0px 0px 10px 5px" type="submit" class="btn btn-primary">Post</button>
             }

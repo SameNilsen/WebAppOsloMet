@@ -1,28 +1,30 @@
 ﻿@model CreatePostViewModel
+
+@* Create a post *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Create a post";
 }
 
+<!-- This view is a form used for creating a post -->
 <h2>Create a post</h2>
 
 <div asp-validation-summary="All" class="text-danger"></div>
-
 <form asp-action="Create">
+    <!-- Title -->
     <div class="form-group">
         <label asp-for="Post.Title">Title</label><span class="text-danger">*</span>
         <input asp-for="Post.Title" placeholder="Title" class="form-control" />
         <span asp-validation-for="Post.Title" class="text-danger"></span>
     </div>
+    <!-- Description text -->
     <div class="form-group">
         <label asp-for="Post.Text">Text</label><span class="text-danger">*</span>
         <textarea asp-for="Post.Text" placeholder="Description" class="form-control"></textarea>
         <span asp-validation-for="Post.Text" class="text-danger"></span>
     </div>
-    @* <div class="form-group">
-        <label asp-for="UserId"></label><span class="text-danger">*</span>
-        <input asp-for="UserId" class="form-control" />
-        <span asp-validation-for="UserId" class="text-danger"></span>
-    </div> *@
+    <!-- Subforum -->
     <div class="form-group">
         <label asp-for="Post.SubForum">Subforum</label><span class="text-danger">*</span>
         <select asp-for="Post.SubForum" asp-items="Model.SubForumSelectList" class="form-control">
@@ -30,14 +32,17 @@
         </select>
         <span asp-validation-for="Post.SubForum" class="text-danger"></span>
     </div>
+    <!-- Image URL -->
     <div class="form-group">
         <label asp-for="Post.ImageUrl">Image URL</label>
         <input asp-for="Post.ImageUrl" placeholder="/images/..." class="form-control" />
         <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
     </div>
+    
     <br />
+
+    <!-- CANCEL and POST buttons -->
     <a asp-action="Posts" class="btn btn-secondary">Cancel</a>
-    <!--<a asp-action="Card" class="btn btn-secondary">Back to card view</a>-->
     <button type="submit" class="btn btn-primary">Post</button>
 </form>
 

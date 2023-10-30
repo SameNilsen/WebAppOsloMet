@@ -1,11 +1,16 @@
 ﻿@model PostListViewModel
 
+@* Card View *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Posts";
 }
 
+<!-- Welcome text -->
 <h1 style="text-align:center;">Main Feed</h1>
 
+<!-- Inherits another view called _PostsCard -->
 <div>
     <partial name="_PostsCard" model="Model.Posts" />
 </div>

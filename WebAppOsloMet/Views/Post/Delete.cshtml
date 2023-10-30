@@ -1,25 +1,37 @@
 ﻿@model Post
+
+@* Delete a post *@
+
 @{
+    // Tab title
     ViewData["Title"] = "Delete";
 }
 
+<!-- This view is a form used for deleting a post -->
 <h3 style="text-align:center">Are you sure you want to delete this post??!?</h3>
+
 <hr />
+
 <div style="text-align:center">
     <dl class="row">
+        <!-- Title -->
         <dt class="col-xs-5">Title</dt>
         <dd class="col-xs-6">@Model.Title</dd>
 
+        <!-- Vote count ->
         <dt class="col-xs-5">Upvotes</dt>
         <dd class="col-xs-6">@Model.UpvoteCount</dd>
 
+        <!-- Subforum -->
         <dt class="col-xs-5">Subforum</dt>
         <dd class="col-xs-6">@Model.SubForum</dd>
 
+        <!-- Image URL -->
         <dt class="col-xs-5">Image URL</dt>
         <dd class="col-xs-6">@Model.ImageUrl</dd>
     </dl>
 
+    <!-- DELETE and CANCEL buttons -->
     <form asp-action="DeleteConfirmed" asp-route-id="@Model.PostID" method="post">
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="DetailedPost" asp-route-id="@Model.PostID" class="btn btn-secondary">Cancel</a>
