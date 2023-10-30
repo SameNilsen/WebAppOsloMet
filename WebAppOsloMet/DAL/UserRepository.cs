@@ -20,7 +20,7 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                return await _db.Users.ToListAsync();
+                return await _db.Users.ToListAsync();  //  Gets all users as a list.
             }
             catch (Exception e)
             {
@@ -35,7 +35,7 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                return await _db.Users.FindAsync(id);
+                return await _db.Users.FindAsync(id);  //  Tries to find one item/user by id.
             }
             catch (Exception e)
             {

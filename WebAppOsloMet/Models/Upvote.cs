@@ -1,6 +1,8 @@
 ﻿
 namespace WebAppOsloMet.Models
 {
+    // Data model (data schema) for DB
+    // User and Post are navigation properties.
     public class Upvote
     {
         public int UpvoteId { get; set; }

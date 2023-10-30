@@ -3,10 +3,8 @@
 namespace WebAppOsloMet.Models
 {
     // Data model (data schema) for DB
-    // Navn under må starte med uppercase.
-    // String Name har default Empty, sier at det må være en verdi.
-    // string? betyr at det er nullable. Kan være null.
-    // Virtual er knyttet til Lazy loading
+    // User and Post are navigation properties.
+    
     public class Comment
     {
         public int CommentID { get; set; }

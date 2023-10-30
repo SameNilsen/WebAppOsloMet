@@ -20,7 +20,7 @@ namespace WebAppOsloMet.DAL
         {         
             try
             {
-                return await _db.Posts.ToListAsync();
+                return await _db.Posts.ToListAsync();  //  Gets all posts as a list.
             }
             catch (Exception e)
             {
@@ -50,7 +50,7 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                return await _db.Posts.FindAsync(id);
+                return await _db.Posts.FindAsync(id);  //  Tries to find one item/post by id.
             }
             catch (Exception e)
             {
@@ -65,8 +65,8 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                _db.Posts.Add(post);
-                await _db.SaveChangesAsync();
+                _db.Posts.Add(post);              //  Adds it.
+                await _db.SaveChangesAsync();     //  Saves it.
                 return true;
             }
             catch (Exception e)
@@ -82,8 +82,8 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                _db.Posts.Update(post);
-                await _db.SaveChangesAsync();
+                _db.Posts.Update(post);        //  Updates the database.
+                await _db.SaveChangesAsync();  //  Saves the database.
                 return true;
             }
             catch (Exception e)
@@ -99,14 +99,14 @@ namespace WebAppOsloMet.DAL
         {
             try
             {
-                var post = await _db.Posts.FindAsync(id);
+                var post = await _db.Posts.FindAsync(id);      //  Tries to find the post.
                 if (post == null)
                 {
                     _logger.LogError("[PostRepository post not found for the PostID {PostID:0000}", id);
                     return false;
                 }
-                _db.Posts.Remove(post);
-                await _db.SaveChangesAsync();
+                _db.Posts.Remove(post);                       //  Removes it from the database.
+                await _db.SaveChangesAsync();                 //  Saves the database.
                 return true;
             }
             catch (Exception e)

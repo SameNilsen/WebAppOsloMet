@@ -4,6 +4,8 @@ using WebAppOsloMet.Models;
 
 namespace WebAppOsloMet.Controllers
 {
+
+    //  The controller handling the index page.
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

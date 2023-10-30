@@ -2,6 +2,8 @@
 
 namespace WebAppOsloMet.ViewModels
 {
+    //  ViewModel which includes a list (IEnumerable) of posts, comments and votes to be used when displaying a list of posts along with a User.
+
     public class UserProfileViewModel
     {
         public IEnumerable<Post>? Posts;

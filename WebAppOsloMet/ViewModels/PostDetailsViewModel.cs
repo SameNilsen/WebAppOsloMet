@@ -2,6 +2,8 @@
 
 namespace WebAppOsloMet.ViewModels
 {
+    //  ViewModel which includes post and user for model to be used when displaying a post in a detailed view.
+
     public class PostDetailsViewModel
     {
         public Post Post;

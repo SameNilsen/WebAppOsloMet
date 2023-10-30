@@ -7,7 +7,6 @@ namespace WebAppOsloMet.DAL
         public static void Seed(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
-            //ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
             PostDbContext context = serviceScope.ServiceProvider.GetRequiredService<PostDbContext>();
 
             // Remove everything from database and start over with the initial data

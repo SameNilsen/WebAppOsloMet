@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebAppOsloMet.Models
-{   
+{
     // Data model (data schema) for DB
-    // Navn under må starte med uppercase.
-    // String Name har default Empty, sier at det må være en verdi.
-    // string? betyr at det er nullable. Kan være null.
-    // Virtual er knyttet til Lazy loading
+    // User, Comments and UserVotes are navigation properties.
     public class Post
     {
         public int PostID { get; set; }

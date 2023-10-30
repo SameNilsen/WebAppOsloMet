@@ -204,7 +204,7 @@ namespace WebAppOsloMet.Controllers
                     Text = forum.ToString().ToUpper()
                 }).ToList()
             );
-            ViewBag.RedirectForum = "Gaming";  //  Tror ikke blir brukt??
+            ViewBag.RedirectForum = "Gaming";
 
             return View(subForumPostListViewModel);
         }
@@ -327,7 +327,7 @@ namespace WebAppOsloMet.Controllers
 
             if (ModelState.IsValid)
             {
-                bool returnOk = await _postRepository.Update(post);
+                bool returnOk = await _postRepository.Update(post);  //  Save changes via post repository
                 if (returnOk)
                     return RedirectToAction(nameof(DetailedPost), new { id = post.PostID});
             }
@@ -355,7 +355,7 @@ namespace WebAppOsloMet.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bool returnOk = await _postRepository.Delete(id);
+            bool returnOk = await _postRepository.Delete(id);  //  Deletes the post from database.
             if (!returnOk)
             {
                 _logger.LogError("[PostController] Post deletion failed for the PostId {PostID:0000}", id);
@@ -384,9 +384,10 @@ namespace WebAppOsloMet.Controllers
             user = _userRepository.GetUserByIdentity(identityUserId).Result;
             if (user == null)
             {
-                return new Upvote { UserId = -1};
+                return new Upvote { UserId = -1};  //  Create a dummy upvote to be returned, so that the calling method handles error.
             }
             //  --->
+
             if (post.UserVotes != null)  //  Check to see if there are any votes on that post.
             {
                 //  Finds and returns the vote.
@@ -424,7 +425,7 @@ namespace WebAppOsloMet.Controllers
 
             var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
 
-            if (vote.UserId == -1)
+            if (vote.UserId == -1)  //  If user could not be found in GetVote()
             {
                 _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
                 return BadRequest("Post not found for the PostID");
@@ -471,7 +472,7 @@ namespace WebAppOsloMet.Controllers
 
             var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
 
-            if (vote.UserId == -1)
+            if (vote.UserId == -1)  //  If user could not be found in GetVote()
             {
                 _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
                 return BadRequest("Post not found for the PostID");

@@ -11,7 +11,7 @@ namespace WebAppOsloMet.DAL
             //Database.EnsureCreated();
         }
 
-        //  "Users" has a waring because the name User is also (unfortunatly) used by 
+        //  "Users" has a warning because the name User is also (unfortunatly) used by 
         //    the premade IdentityUser from Microsoft.AspNetCore.Identity. This is 
         //     unfortunatly reccuring thing throughout.
         public DbSet<Post> Posts { get; set; }
