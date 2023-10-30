@@ -18,12 +18,14 @@
     {
         <h3>Manage <a asp-area="Identity" asp-page="/Account/Manage/Index">account</a></h3>
     }
+    <br />
     <h2>Credebility</h2>
     <h3>Score: @Model.User.Credebility creds</h3>
     <h4>
         Read <a asp-controller="User"
                 asp-action="CredsInfo">more</a>
     </h4>
+    <br />
 
     <h2>Number of posts: @if (Model.Posts != null)
         {
@@ -39,6 +41,7 @@
                    asp-action="Table"
                    asp-route-id="@Model.User.UserId">posts</a>
     </h3>
+    <br />
 
     <h2>
         Number of comments: @if (Model.Comments != null)
@@ -55,6 +58,7 @@
                    asp-action="Comments"
                    asp-route-userID="@Model.User.UserId">comments</a>
     </h3>
+    <br />
 
     <h2>Number of votes: @if (Model.Votes != null)
         {

@@ -471,6 +471,12 @@ namespace WebAppOsloMet.Controllers
 
             var vote = GetVote(post).Result;  //  Uses the GetVote() method to see and/or get the previous vote.
 
+            if (vote.UserId == -1)
+            {
+                _logger.LogError("[PostController] Post not found for the PostID {PostID:0000}", id);
+                return BadRequest("Post not found for the PostID");
+            }
+
             //  If the user has downvoted the post before then nothing should happen. Else if
             //   the user has not voted or the previous vote was an upvote:
             if (vote.Vote == string.Empty || vote.Vote == "upvote")
